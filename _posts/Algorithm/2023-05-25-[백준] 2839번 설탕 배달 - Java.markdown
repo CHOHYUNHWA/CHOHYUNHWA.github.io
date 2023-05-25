@@ -1,0 +1,104 @@
+---
+layout: post
+title:  "[백준] 2839번 설탕 배달 - Java"
+date:   2023-05-25 12:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+
+
+![](https://velog.velcdn.com/images/gusghk115/post/d35958f0-08e8-4e5b-9db6-3537b66cd296/image.png)
+
+
+---
+
+## 🖊️풀이법
+
+이번 문제는 2가지 방식으로 풀었다.
+
+1. 반복문을 통해 모든 경우의 수를 찾는 법
+2. 알고리즘을 찾아서 푸는 방법
+
+### 첫 번째 풀이법 
+시간복잡도 - O(n)
+
+```java 
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        int tmp = N; // tmp에 N값을 선언
+        int count = 1;
+        int answer = 0;
+        if(N%5 == 0){ //만약 N이 5로 나누어 진다면 가장 적은 봉지 수 이므로 check
+            answer = N/5;
+        }
+        if(N%5 != 0 && N%3 == 0){ //만약 N이 5로 나누어 지는 수가 아니면서 3으로 나누어 질 경우 check
+            answer = N/3;
+        }
+        while(5*count <= N){ //N*count 가 N보다 커질때 까지 반복
+            tmp = tmp - 5*count; tmp에 5씩 빼주면서 3으로 나누어 떨어지는지 검증
+            if(tmp%3 == 0) { // 만약 tmp -5*count가 3으로 나누어 질 경우 
+                if (answer == 0 || answer > count+tmp/3) { //앞서 검증했던 answer의 값이 count+tmp/3보다 작은 지 검증 후
+                    answer = count + tmp / 3; //answer값에 할당
+                }
+            }
+            count ++;
+            tmp = N;
+        }
+        if(answer != 0){ //모든 반복문을 순회하고 만약 answer가 0이 아닌 경우
+            System.out.println(answer); //answer를 출력
+        } else {
+            System.out.println(-1); // answer가 0일 경우에는 나누어 담기는 경우가 없기 때문에 -1을 출력
+        }
+    }
+}
+```
+
+
+### 두 번째 풀이법 
+시간복잡도 - O(1)
+
+N값에 따른 규칙을 산출하여 풀어보자.
+![](https://velog.velcdn.com/images/gusghk115/post/66033eb1-04b0-4454-a8f1-82e3ffb82be3/image.png)
+
+N값에 따라서 봉지개수,몫(N/5),나머지(N%)를 표로 산출해 보았다.
+위 표를 참조하면 크게 네가지 규칙을 찾을 수 있다.
+
+1. N이 4 또는 7인 경우 ==> -1 출력
+2. N%5 == 0인 경우 ==> N/5 출력
+2. N%5 == 1 또는 3인 경우 N/5+1 출력
+3. N%5 == 2 또는 4인 경우 N/5+2 출력
+
+따라서, 위 규칙들을 코드로 작성하면 아래와 같다.
+```java 
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        if(N == 4 || N == 7){
+            System.out.println(-1);
+        }else if(N%5 == 0){
+            System.out.println(N/5);
+        } else if(N%5 == 1 || N%5 == 3){
+            System.out.println(N/5 + 1);
+        } else if(N%5 == 2 || N%5 == 4){
+            System.out.println(N/5 + 2);
+        }
+    }
+    
+```
+
+---
+
+## 느낀점
+
+알고리즘 문제는 푸는 사람이 어떻게 푸느냐에 따라서 효율성이 결정된다.
+이처럼 규칙을 파악하고 최대한 효율적인 연산을 할 수 있는 방법을 찾는 연습을 하자 :) 
