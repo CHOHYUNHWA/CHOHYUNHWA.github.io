@@ -47,13 +47,17 @@ author:
   # twitter:             <username>
 
 # Add links to the sidebar.
-menu:
-  - title:             About
-    url:               /about/
-  - title:             Develop
-    url:               /develop/
-  - title:             Algorithm
-    url:               /algorithm/
+# menu:
+#   - title:             About
+#     url:               /about/
+#   - title:             Java
+#     url:               /java/
+#   - title:             Spring
+#     url:               /spring/
+#   - title:             DevOps
+#     url:               /devops/
+#   - title:             Algorithm
+#     url:               /algorithm/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
