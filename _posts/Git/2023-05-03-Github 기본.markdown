@@ -1,0 +1,31 @@
+---
+layout: post
+title:  "Git과 Github 연동과 기본 명령어"
+date:   2022-05-03 14:42:00 +0900
+categories: git
+tags: git
+---
+
+오늘은 모든 개발자들의 협업툴인 git과 github를 연동하여 사용하는 법에 대해서 학습했다.
+
+기본적으로 git의 구조는
+
+
+![](https://velog.velcdn.com/images/gusk115/post/7b5def1d-574b-4b44-bd6b-3edb88203fca/image.png)
+
+위 이미지와 같은 구조를 가진다.
+
+1. OTHER의 Remote Repository 에서 github의 fork를 이용하여 Origin Repository 로 가져온다.
+
+2. ```git clone <레파지토리주소>``` 명령어로 Local repository로 가져온다.
+
+3. 복사해온 파일을 수정후 ```git add <파일명.확장자>```를 입력하여 staging area로 보내주고 commit 할수 있게 준비해준다.
+
+4. commit 할 준비가 완료되어지면 ```git commit -m "코멘트"``` 를 입력하여 commit 해주어 Local Repository 로 보내준다. 
+
+5. Local Repository 까지 보내진 파일을 최종 ```git push origin main``` 으로 Origin Repository로 이동시켜준다. 
+
+6. 그후 Origin Repositoy 에서 pull request를 해주면 다른사람에게 자신의 작업을 알리고 최종적으로 기본적인 깃의 작업의 순환이 완료된다.
+
+이후 협업하는 작업자는 git pull 명령어를 이용해 내가 올린 파일을 확인 수정 할수 있으며 위와 같은 순서로 작업을 반복해 나갈수 있다.
+

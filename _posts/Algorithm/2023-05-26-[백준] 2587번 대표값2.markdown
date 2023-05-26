@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "[백준] 2687번 대표값2 - Java"
+date:   2023-05-26 00:00:00 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-05-26 at 2.45.25 PM.png)
+
+---
+
+## 🖊️풀이법
+
+해당 문제는 간단하게 풀 수 있다.
+주어지는 값들을 배열에 담은 후 정렬 시켜서
+배열의 평균값과
+배열의 3번째 값을 출력하면 된다.
+
+```java 
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int[] arr = new int[5]; //크기가 5인 배열을 생성
+        int sum = 0; //배열들의 합을 담을 변수 생성
+        for (int i = 0; i < arr.length; i++) { //반복문을 통해 배열에 주어진 값 할당
+            arr[i] = Integer.parseInt(br.readLine());
+            sum += arr[i];
+        }
+        for (int i = 0; i < arr.length - 1; i++) { //정렬을 위한 반복문(bubble Sorting)
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if(arr[j] > arr[j+1]) {
+                    swap(arr, j, j + 1);
+                }
+            }
+        }
+        int average = sum/5;
+        int center = arr[2];
+        System.out.println(average);
+        System.out.println(center);
+    }
+    public static void swap(int[] arr, int i, int j) { //배열의 위치를 이동하는 메서드
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
+```
+
+---
+
+## 느낀점
+
+자바에서 제공하는 Arrays.sor()라는 기능을 이용하면 보다 간결하고 짧게 작성할 수 있지만
+여러가지의 정렬방법들 중 Bubble sort를 직접 구현해보고 싶어서 다음과 같이 풀었다.
+정렬문제가 나올때마다 효율적인 정렬방법에 대해 생각을 하고 구현하는 연습을 해야겠다. :) 
+
