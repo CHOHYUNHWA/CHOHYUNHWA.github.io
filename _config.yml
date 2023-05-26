@@ -28,7 +28,7 @@ description:           >
   개발하는 토마토의 기술 블로그💻
 
 # A shorter description for the sidebar.
-tagline:               기억보단 기록을
+tagline:               기억보단 기록을📖
 
 # A list of keywords for your blog
 keywords:              []
@@ -83,8 +83,8 @@ paginate_path:         /:num/
 # Theme
 # ---------------------------------------------------------------------------------------
 
-# theme: jekyll-theme-hydejack
-remote_theme: hydecorp/hydejack@v9
+theme: jekyll-theme-hydejack
+# remote_theme: hydecorp/hydejack@v9
 
 
 # Customizaton
