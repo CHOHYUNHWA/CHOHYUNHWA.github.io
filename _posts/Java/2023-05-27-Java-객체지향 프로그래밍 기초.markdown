@@ -1,0 +1,129 @@
+---
+layout: post
+title:  "Java-객체지향 프로그래밍 기초-1"
+date:   2023-05-27 14:42:00 +0900
+categories: java
+tags: java
+---
+## Java-객체지향 프로그래밍 기초-1
+
+## 클래스와 객체
+
+![screenshot](/assets/img/java/Screenshot 2023-05-27 at 7.14.38 PM.png)
+
+클래스란, 객체를 만들기 위한 하나의 틀이며 객체는 클래스로 만들어진 것을 객체이다. <br>
+이해하기 쉽게 위의 붕어빵틀과 붕어빵을 비유해서 생각해보자.<br>
+우선, 붕어빵을 만들기 위해서는 붕어빵을 만들 틀이 필요하다. <br>
+여기서 붕어빵틀은 Class가 붕어빵틀로 만들어진 붕어빵은 객체가 되는 것이다.<br>
+
+### 클래스의 구성요소와 기본 문법
+
+클래스르 생성하는 방법은 매우 간단하다.
+아래의 코드와 같이 **class** 키워드를 사용해서 클래스를 정의할 수 있다.
+```java
+class 클래스명 {
+
+}
+```
+
+그렇다면, 객체는 어떻게 생성할 수 있을까?
+객체를 생성하는 방법 또한 매우 간단하다.
+```java
+class MakeObject{
+    public static void main(String[] args){
+        Car car = new Car(); // Car 클래스로 생성된 car객체
+    }
+}
+
+class Car{
+
+}
+```
+이처럼 ***new*** 키워드를 통해서 클래스를 인스턴스화 하고 객체로 생성할 수 있다.
+
+그렇다면 객체를 만들기 위한 클래스에는 어떤 구성요소들이 존재할까?
+클래스에는 아래와 같은 4가지의 구성요소가 존재한다.
+* 필드(Field)
+* 메서드(Method)
+* 생성자(Constructor)
+* 이너클래스(Inner Class)
+
+## 필드
+
+필드란 클래스 내부의 인스턴스 변수로, 클래스의 속성을 나타낸다. 
+예를 들어, Car라는 클래스가 있다고 가정해보자.
+Car의 속성으로는 크게 브랜드, 모델명, 색을 속성으로 가지고 있다면 아래와 같이 코드로 나타낼 수 있다.
+
+```java
+class Car{
+    String brand; //필드(인스턴스 변수)
+    String model; //필드(인스턴스 변수)
+    String color; //필드(인스턴스 변수)
+}
+```
+이와 같이 클래스에서 필드란, 클래스가 가지고 있는 속성을 나타내는 인스턴스 변수이다.
+
+
+## 메서드
+
+메서드란 클래스가 가지고 있는 기능이다.
+자동차에는 시동켜기 기능, 가속 기능, 멈춤 기능이 있다고 가정하고 코드로 나타내보자
+
+```java
+class Car{
+    String brand; 
+    String model; 
+    String color;
+
+    void startOn(){ //메서드
+        System.out.println("startOn");
+    }
+    void accelerate(){ //메서드
+        int speed = 10; //지역 변수
+        System.out.println(speed + "speed Up");
+    }
+    void stop(){ //메서드
+        System.out.println("stop car");
+    }
+}
+```
+Car클래스가 가지고 있는 기능들을 메서드로 나타내보았다.
+여기서 accelerate 메서드는 speed라는 속성을 가지고 있는데 메서드 내부에 선언된 변수를 지역 변수라고 부른다.
+지역 변수는 메서드 내부에서만 유효하고 메서드 외부에서는 사용되지 못한다.
+
+### 메서드 오버로딩
+메서드 오버로딩은 하나의 클래스 내부에 같은 이름의 메서드를 여러개 정의하는 것이다.<br>
+같은 이름의 메서드를 어떻게 정의할 수 있냐고..? 이는 메서드 시그니쳐라는 개념때문이다. <br>
+메서드 시그니처는 메서드의 이름, 메서드의 매개변수 타입을 의미하며 메서드 시그니쳐를 통해서 JVM은 메서드를 구분한다. <br>
+아래의 자바코드로 메서드 오버로딩을 알아보자
+
+```java 
+
+class Method{
+    public void test(){
+        System.out.println("1번 테스트 메서드")
+        }
+    
+    public void test(int i){
+    System.out.println("2번 테스트 메서드")
+    }
+
+    public void test(int i, int j){
+    System.out.println("3번 테스트 메서드")
+    }
+
+    public void test(String s){
+    System.out.println("4번 테스트 메서드")
+    }
+
+    public void test(String s1, String s2){
+    System.out.println("5번 테스트 메서드")
+    }
+}
+```
+위의 코드와 같이 이름은 같지만 매개변수의 타입과 개수의 차이로 메서드를 구분하여 정의하는 것을 메서드 오버로딩이라고 한다.
+
+---
+
+## 끝으로
+다음 포스팅에서는 클래스의 나머지 구성요소인 생성자와 이너클래스에 대한 포스팅을 할 예정이다. :) 

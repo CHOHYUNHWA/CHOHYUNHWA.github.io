@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "[백준] 25305번 커트라인 - Java"
+date:   2023-05-27 00:00:00 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-05-27 at 5.29.18 PM.png)
+
+---
+
+## 🖊️풀이법
+
+이번 문제 또한 버블소팅 방식으로 풀었다.
+알고리즘 문제를 풀며 최대한.. 라이브러리 사용을 지양하고, 직접 기능을 구현해서 해보고자 한다..!
+
+```java 
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken()); //점수의 총량을 N에 담는다.
+        int[] scores = new int[N]; //N크기의 배열을 만들어준다.
+        int x = Integer.parseInt(st.nextToken()); //상을 받는 인원(커트라인)을 x에 할당
+        st = new StringTokenizer(br.readLine());
+        for(int i =0; i<N; i++){
+            scores[i] = Integer.parseInt(st.nextToken()); // 각각의 scores배열 요소에 점수를 할당
+        }
+        for(int i = 0; i<N-1; i++){
+            for(int j = 0; j<N-i-1; j++){
+                if(scores[j] < scores[j+1]) //BubbleSort를 이용해서 내림차순 정렬을 해준다.
+                    swap(scores,j,j+1);
+            }
+        }
+        System.out.println(scores[x-1]); //정렬된 scores배열에서 x번째 수(커트라인)을 출력한다. 
+    }                                    //배열의 index는 0부터 시작하므로 x-1로 지정
+    public static void swap(int[] arr, int i, int j){
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
+```
+
+---
+
+## 느낀점
+
+아직까지 정렬에 대한 이해는 BubbleSorting밖에 개념이 없다.
+여러가지의 정렬법이 있는 것으로 아는데, 정렬 개념들을 좀 더 학습하고
+효율적인 정렬을 사용할 수 있도록 노력해야겠다.
+
