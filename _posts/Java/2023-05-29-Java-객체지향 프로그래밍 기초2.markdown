@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Java-객체지향 프로그래밍 기초-2"
-date:   2023-05-28 14:42:00 +0900
+date:   2023-05-29 14:42:00 +0900
 categories: java
 tags: java
 ---
