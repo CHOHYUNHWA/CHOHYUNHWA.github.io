@@ -1,0 +1,64 @@
+---
+layout: post
+title:  "[백준] 11651번-좌표 정렬하기 2-Java"
+date:   2023-05-30 00:00:00 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-05-30 at 12.16.34 PM.png)
+
+---
+
+## 🖊️풀이법
+
+앞서 풀었던 <a href="https://chohyunhwa.github.io/algorithm/2023-05-29-백준-11650번-좌표-정렬하기-Java/">백준 11650번 좌표 정렬하기</a> 문제와 동일하지만 정렬 기준이 y좌표란 것만 다르기 때문에 해당 부분만 수정해서 손쉽게 풀 수 있다.
+만약 아래의 코드가 이해가지 않는다면, 위의 11650번 문제를 참고하자!
+
+
+### 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int N  = Integer.parseInt(st.nextToken()); //N에 배열의 개수를 정의
+        int[][] arr = new int[N][2]; //[N][2]크기의 2차원 배열 생성
+        for(int i = 0; i<N; i++){ //반복문을 통해 배열의 값을 할당
+            st = new StringTokenizer(br.readLine());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] e1, int[] e2) {
+                if(e1[1] == e2[1]) { //만약 배열의 두번째 요소(Y값)가 같을 경우
+                    return e1[0] - e2[0]; //첫번째 요소를 비교(X값 비교)하고 양수,0,음수값을 반환한다.
+                }
+                else { //만약 배열의 두번째 요소(Y값)가 다를경우
+                    return e1[1] - e2[1]; // 두번째 요(Y값)만 비교한다.
+                }
+            }
+        });
+        for(int i = 0; i< arr.length; i++){
+            sb.append(arr[i][0]).append(" ").append(arr[i][1]).append('\n');
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+
+---
+
+## 끝으로
+
+기존의 간단한 배열 요소만 변경하여 손쉽게 풀 수 있었다.<br>
+하지만 만약 Comparator 인터페이스의 compare메소드에 대한 이해도가 없다면 이런 손쉬운 변경도 하기 힘들 것이다.<br>
+기능 사용보다는 원리와 작동방식을 이해하고 내것으로 만들자.
+

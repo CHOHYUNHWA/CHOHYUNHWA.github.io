@@ -1,0 +1,122 @@
+---
+layout: post
+title:  "[백준] 11650번-좌표 정렬하기-Java"
+date:   2023-05-29 00:00:00 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-05-29 at 5.31.25 PM.png)
+
+---
+
+## 🖊️풀이법
+
+이번 문제는 꽤나 고민이 많았다.. <br>
+처음에는 시간초과가 나와서 당황했지만,<br>
+Comparator 인터페이스를 활용해서 compare메소드를 오버라이딩해주고 정렬하는 방법으로 풀었다.
+
+<br>
+
+우선 첫번째로 시간초과로 틀린 코드이다.
+### 시간초과..
+
+```java 
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int N  = Integer.parseInt(st.nextToken());
+        int[][] arr = new int[N][2];
+        for(int i = 0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
+        }
+
+        for(int i = 0; i< arr.length-1; i++){
+            for(int j = 0; j< arr.length-i-1; j++){
+                if((arr[j][0] > arr[j+1][0]) || ((arr[j][0] == arr[j+1][0] && arr[j][1] > arr[j+1][1]))){
+                    swap(arr,j,j+1);
+                }
+            }
+        }
+        for(int i = 0; i< arr.length; i++){
+            sb.append(arr[i][0]).append(" ").append(arr[i][1]).append('\n');
+        }
+        System.out.println(sb);
+    }
+    static void swap(int[][] arr,int i ,int j){
+        int[] tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
+```
+
+해당 방식은 BubbleSort방식으로 시간 복잡도 O(N제곱)의 복잡도로 구현은 쉬우나 복잡도가 매우 높아 실제로는 잘 사용하지 않는 정렬이다.<br> 
+문제를 살펴보면 N의 최대개수는 10만개로.. 버블소팅을 사용하면 총 1억번의 연산을 해야하고, 시간 제한 1초라는 제한사항을 만족하지 못하기 때문에 시간초과를 뱉는다..<br>
+따라서 자바 내장함수 Array.sort를 이용하여 풀었다.<br>
+Arrays.sort는 기본적으로 정렬에 대한 최적화가 매우 잘 되어있어서 별도의 정렬을 구현하기보다 내장함수 사용하는 것을 추천한다.<br>
+물론.. 다양한 정렬법 퀵소팅, 머지소팅등은 이해하고 학습해야하지만 매번 직접 구현하는 것은 쉽지않아서 내장함수를 사용하였다.<br>
+그런데 여기서 한가지 문제점이 생긴다..!<br>
+별도의 설정없이는 Arrays.sort는 1차원 배열에서만 사용할 수 있다..
+2차원 배열에서 Arrays.sort를 사용하려면 Comparator라는 인터페이스의 메소드를 구현하여 사용해야한다.<br>
+이유는 배열을 정렬할때, 어느 값을 기준으로 할지 Java는 모르기 때문이다. 따라서 Comparator의 compare메소드를 구현하고, 정렬하는 방식을 사용했다.
+
+### 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int N  = Integer.parseInt(st.nextToken()); //N에 배열의 개수를 정의
+        int[][] arr = new int[N][2]; //[N][2]크기의 2차원 배열 생성
+        for(int i = 0; i<N; i++){ //반복문을 통해 배열의 값을 할당
+            st = new StringTokenizer(br.readLine());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] e1, int[] e2) {
+                if(e1[0] == e2[0]) { //만약 배열의 첫번째 요소가 같을 경우
+                    return e1[1] - e2[1]; //두번째 요소를 비교(비교할 두 요소를 빼줌)하고 양수,0,음수값을 반환한다.
+                }
+                else { //만약 배열의 첫번째 요소가 다를경우
+                    return e1[0] - e2[0]; // 첫번째 요소만 비교한다.
+                }
+            }
+        });
+        for(int i = 0; i< arr.length; i++){
+            sb.append(arr[i][0]).append(" ").append(arr[i][1]).append('\n');
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+위의 compare메서드는 두 값에 대한 비교를 하고 결과값을 양수,0,음수로 반환 받는다.<br>
+일반적으로는 1,0,-1로 표기하는 것이 좋다.<br>
+이유는 타입이 나타낼수 있는 값이 넘어가버리면 결과값이 올바르게 나오지 않기 때문이다.<br>
+예를들어 int타입은 ```-2,147,483,648 ~ 2,147,483,647```까지 표현이 가능하다.<br>
+그런데, ```-2,147,483,648 - 1```를 연산해버리면 int형의 최저값을 넘어가버려서 Underflow가 발생하고 결과값은 최댓값인 ```2,147,483,647```로 나타나기 때문이다.<br>
+따라서 compare메소드를 구현할때는 두 비교값의 연산이 타입이 나타낼 수 있는 최대값을 넘지 않는지 항상 유의하자! 
+
+---
+
+## 끝으로
+
+계속해서 정렬문제를 풀어가면서 다양한 정렬법에 대해 학습하고 있다.<br>
+하지만 퀵소트,카운팅소트 등 개념적인 부분은 이해가 가지만, 실제로 그것을 구현해보고 코드화 하는 것은 많이 부족한 것 같다.<br>
+더 노력하자.
+

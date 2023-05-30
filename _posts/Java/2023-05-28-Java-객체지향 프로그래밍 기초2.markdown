@@ -10,7 +10,119 @@ tags: java
 
 ### 생성자
 
+생성자란 무엇인가?
+생성자는 한마디로 클래스 내부에서 객체가 생성될때 호출 되어 객체를 초기화 해주는 메서드라고 볼수 있다.<br>
+생성자의 구조는 아래와 같다.
+```java
+클래스명(매개변수){
+    /// 
+}
+```
+생성자는 일반적인 메서드와 비슷한 구조를 가지고 있지만 두 가지의 특징이 존재한다.
+
+첫 번째는 **생성자 이름은 반드시 클래스의 이름과 같아야한다.** <br>
+두 번째는 **생성자는 리턴 타입이 없다.**
+
+위의 두가지 특징에 유의해서 생성자에 대해 계속 알아보자.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Constructor constructor1 = new Constructor();
+        Constructor constructor2 = new Constructor("String");
+        Constructor constructor3 = new Constructor(10);
+    }
+}
+
+
+
+class Constructor{
+    Constructor(){
+        System.out.println("나 매개변수 없음~!");
+    }
+    Constructor(String s){
+        System.out.println("나 매개변수 String");
+    }
+    Constructor(int i){
+        System.out.println("나 매개변수 int");
+    }
+}
+
+//출력
+//나 매개변수 없음~!
+//나 매개변수 Stirng
+//나 매개변수 int
+```
+위와같이 생성자는 메서드의 한 종류로써 오버로딩이 가능하다.
+
+자 그렇다면, 생성자가 왜 필요할까??
+위에서 설명한 것처럼 생성자는 객체를 생성할때 내부의 필드를 초기화 해줄 수 있다.
+```java
+public class Main {
+    public static void main(String[] args) {
+        Human human1 = new Human();
+        Human human2 = new Human("홍길동");
+        Human human3 = new Human("홍길동",30);
+        Human human4 = new Human("홍길동",30,177);
+        Human human5 = new Human("홍길동",30,177,"홍당무");
+    }
+}
+
+class Human{
+    private String name;
+    private int age;
+    private int height;
+    private String nickname;
+
+    public Human(){
+    }
+
+    public Human(String name){
+        this.name = name;
+    }
+
+    public Human(String name, int age){
+        this.name = name;
+        this.age = age;
+    }
+    public Human(String name, int age, int height){
+        this.name = name;
+        this.age = age;
+        this.height = height;
+    }
+    public Human(String name, int age, int height, String nickname){
+        this.name = name;
+        this.age = age;
+        this.height = height;
+        this.nickname = nickname;
+    }
+}
+```
+위의 코드를 한번 살펴보자.
+Human이란 클래스에는 5개의 생성자가 있고, Main클래스에는 human1~5까지 5개의 객체가 생성되어있다.
+* human1은 객체가 가진 name,age,height,nickname값이 모두 Null또는 0이다.
+* human2는 name 값을 제외 하고 모두 Null 또는 0이다.
+* human3는 name,age 값을 제외 하고 모두 Null 또는 0이다.
+* human4는 name,age,height 값을 제외 하고 모두 Null이다.
+* human5는 모든 속성이 초기화 되었다.
+
+만약 human1~4는 가지고 있는 속성값을 초기화해주려면 human1.name = "이름" 혹은 Setter메서드를 통하여 초기화 혹은 정의 해주어야 한다.
+
+그리고 만약 class내부에 생성자가 선언이 되어있지 않다면, 아래와 같이 Java에서는 매개변수가 없는 기본 생성자를 정의해준다.
+```java
+class Human{
+    private String name;
+    private int age;
+    private int height;
+    private String nickname;
+
+    public Human(){ //만약 생성자 선언을 안해주면 이처럼 기본 생성자를 만들어줌 -> 하지만 코드로 보여지진 않음
+    }
+}
+
 ---
+
+### this 키워드
 
 
 ### 이너 클래스(Inner Class)
@@ -21,4 +133,5 @@ tags: java
 ### static 키워드
 
 ## 끝으로
-다음 포스팅에서는 클래스의 나머지 구성요소인 생성자와 이너클래스에 대한 포스팅을 할 예정이다. :) 
+
+객체지향 프로그래밍 기초 포스팅에서는 객체지향 보다는 Java에서의 객체지향적인 요소를 알기전의 선행 학습 단계정도라고 보면 될 것 같다..!

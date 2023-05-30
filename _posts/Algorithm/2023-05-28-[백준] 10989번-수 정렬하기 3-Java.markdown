@@ -1,0 +1,50 @@
+---
+layout: post
+title:  "[백준] 10989번-수 정렬하기 3-Java"
+date:   2023-05-28 00:00:00 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-05-28 at 4.39.11 PM.png)
+
+---
+
+## 🖊️풀이법
+
+이번 문제는 카운팅 정렬을 사용하였다.
+해당 방법이 일반적으로 방법의 카운팅 정렬은 아니지만 카운팅 배열 + 반복문을 통해 풀었다.
+
+
+```java 
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        int[] arr = new int[10001]; //문제에서 수의 범위만큼 크기의 배열 선언
+        for(int i = 0; i<N; i++){
+            int tmp = Integer.parseInt(br.readLine());
+            arr[tmp]++;  //N의 값이 들어왔을때 arr[N]에 ++ 해줌
+        }
+        for(int i = 0; i<arr.length; i++){
+            if(arr[i] != 0) {   //배열의 값이 0이 아닌경우
+                for (int j = 0; j < arr[i]; j++) { // 배열의 숫자만큼 i값을 sb에 더해줌
+                    sb.append(i).append('\n');
+                }
+            }
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+## 끝으로
+
+카운팅 정렬은 시간복잡도가 O(n)이라는 엄청나게 빠른 속도를 가지지만 배열의 요소의 종류가 많으면 많아질 수록 메모리 소모가 많아진다는 약점이 있다.
+
