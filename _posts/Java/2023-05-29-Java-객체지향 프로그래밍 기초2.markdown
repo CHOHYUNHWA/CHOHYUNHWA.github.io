@@ -100,7 +100,7 @@ class Human{
 ```
 위의 코드를 한번 살펴보자.
 Human이란 클래스에는 5개의 생성자가 있고, Main클래스에는 human1~5까지 5개의 객체가 생성되어있다.
-* human1은 객체가 가진 name,age,height,nickname값이 모두 Null또는 0이다.
+* human1은 객체가 가진 name, age, height, nickname값이 모두 Null또는 0이다.
 * human2는 name 값을 제외 하고 모두 Null 또는 0이다.
 * human3는 name,age 값을 제외 하고 모두 Null 또는 0이다.
 * human4는 name,age,height 값을 제외 하고 모두 Null이다.
@@ -119,19 +119,64 @@ class Human{
     public Human(){ //만약 생성자 선언을 안해주면 이처럼 기본 생성자를 만들어줌 -> 하지만 코드로 보여지진 않음
     }
 }
+```
 
----
 
 ### this 키워드
 
+생성자를 만들때 ```this```라는 키워드가 갑자기 나와서 당황했을 수도 있다.<br>
+여기서 ```this```는 일반적으로 생성자를 생성할때는 생성자 매개변수의 값과 클래스 필드 값을 동일하게 지정한다.<br>
+그때 ```this```키워드를 사용하며, ```this.필드값 = 매개변수```로 구분하는 것이다. :)
+
+---
 
 ### 이너 클래스(Inner Class)
+
+이너 클래스는 말 그대로 클래스 안에 있는 클래스를 이너 클래스라고 한다.
+
+```java
+class Out {
+    private String outString;
+    private int outNum = 6;
+
+    class In {
+        String inString;
+        int inNum;
+    }
+    void innerClassMethod() {
+        int inNum2 = 5;
+        class MethodInClass {
+            void test() {
+                System.out.println(outNum);
+                System.out.println(inNum2);
+            }
+        }
+        MethodInClass methodInClass = new MethodInClass();
+        methodInClass.test();
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) {
+        Out out = new Out();
+        out.innerClassMethod();
+    }
+}
+
+
+//출력 6
+//출력 5
+```
+과 같이 클래스 내부에 또 다른 클래스를 정의하고 사용할 수 있다.<br>
+또한 클래스 내부에 선언된 ```innerClassMethod```와 같은 메소드 내부에도 클래스를 생성하고 사용할 수 있다.<br>
 
 ---
 
 
-### static 키워드
 
 ## 끝으로
 
-객체지향 프로그래밍 기초 포스팅에서는 객체지향 보다는 Java에서의 객체지향적인 요소를 알기전의 선행 학습 단계정도라고 보면 될 것 같다..!
+Java에서 객체지향 4개 요소를 학습하기 전에, 전체적인 기초들을 정리해보았다.<br>
+물론 ```static```키워드나, 생략된 부분이 많지만 너무 상세히 적는 것 보다는 전체적인 흐름만 우선 정리해두고<br>
+후에 다시 부족한 부분을 보완하는 블로깅을 진행하려 한다.:) 
