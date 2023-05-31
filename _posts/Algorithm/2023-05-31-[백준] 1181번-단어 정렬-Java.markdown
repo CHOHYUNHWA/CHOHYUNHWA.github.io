@@ -1,0 +1,113 @@
+---
+layout: post
+title:  "[백준] 1181번-단어 정렬-Java-Java"
+date:   2023-05-31 12:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-05-31 at 12.22.25 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1181">백준 1181번 좌표 정렬하기</a></center>
+---
+
+## 🖊️풀이법
+
+이번 문제는 정렬뿐만 아니라 중복제거와 합쳐진 문제였다.
+```Collection```인 Set을 통해 중복을 제거해주고, Comparator 인터페이스의 compare 메서드를 커스터마이징 후 자바 내장함수인 ```Arrays.sor()```를 통해 정렬 해주었다.
+
+
+### 1차 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N  = Integer.parseInt(br.readLine());
+        Set<String> set = new HashSet<>(); //중복 제거를 위한 HashSet 객체 생성
+        for(int i = 0; i< N; i++){
+            set.add(String.valueOf(br.readLine())); //set객체 내부에 요소 추가
+        }
+        String[] sArr = set.toArray(new String[set.size()]); //set을 배열로 변경
+        Arrays.sort(sArr, new Comparator<String>() { //정렬 메서드 실행
+            @Override
+            public int compare(String o1, String o2) { //Compare 메서드 오버라이딩
+                if (o1.length() == o2.length()) { //만약 비교 객체의 길이가 같으면
+                    for (int i = 0; i < o1.length(); i++) {
+                        if (o1.charAt(i) != o2.charAt(i)) { //문자열 내 문자가 다른 경우
+                            return o1.charAt(i) - o2.charAt(i); //문자를 비교해서 오름차순 정렬
+                        }
+                    }
+                }
+                return o1.length() - o2.length(); //문자열의 길이가 다른경우 문자열 길이가 짧은 순으로 정렬
+            }
+        });
+        for(int i = 0; i<sArr.length; i++){
+            sb.append(sArr[i]).append(" ");
+        }
+        System.out.println(sb);
+    }
+}
+```
+1차 답안은 다음과 같이 코드를 작성하였다.<br>
+좀 더 효율적이고 가독성 있는 코드가 없을까 생각하는 와중에 ```Comparable``` 인터페이스의 ```compareTo```메서드를 사용해서 좀더 코드를 간결하게 해보고자 했다! 
+
+
+### 리팩토링 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N  = Integer.parseInt(br.readLine());
+        Set<String> set = new HashSet<>();
+        for(int i = 0; i< N; i++){
+            set.add(String.valueOf(br.readLine()));
+        }
+        String[] sArr = set.toArray(new String[set.size()]);
+        Arrays.sort(sArr, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) { 
+                if(o1.length() == o2.length()) {
+                    o1.compareTo(o2); //compare메서드로 좀더 간결하게 표현
+                }
+                return o1.length() - o2.length();
+            }
+        });
+        for(int i = 0; i<sArr.length; i++){
+            sb.append(sArr[i]).append(" ");
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+```compareTo```메서드의 경우에는 문자열의 순서를 바탕으로 같은 순서의 문자를 비교하고 양수,0,음수의 int타입으로 반환한다.<br>
+따라서 문자열의 길이가 다른경우엔 문자열의 길이를 비교하지 않고 단순히 같은 순서의 문자만 비교하기 때문에 두 비교 문자열의 길이가 같을 경우 라는 조건을 넣어주면, 문제를 해결하는 코드를 구현할 수 있게 된다!
+
+
+### 오늘의 포인트
+* ```Set```의 경우 중복을 허용하지 않고 순서를 보장하지 않기 때문에 중복제거에 Set을 사용 후 순서를 보장하는 ```Array```의 형태로 변경하여 사용
+
+* ```compare``` 메서드와 ```compareTo``` 메서드의 차이
+    *  ```compare```- ```Comparator``` 인터페이스의 메서드로 ```compare(T o1, T o2)```와 같이 매개변수가 두개 이다.
+        * 두 객체를 비교
+    * ```compare```- ```Comparable``` 인터페이스의 메서드로 ```compareTo(T o)```와 같이 매개변수가 하나이다.
+        * 자기 자신과 객체를 비교
+
+이처럼 두가지는 비슷하지만, 비교하는 기준이 다르다.<br>
+따라서 뭔가 비교한다는 메서드이지만 비교대상이 서로 다르므로 상황에 맞게 잘 사용하도록 하자.
+
+
+---
+
+## 끝으로
+
+간단한 문제이지만 해당 문제에서 구현에 사용하는 요소들의 기본 개념과 구조를 알고나니 이해하는데 더 많이 도움이 되고, 커스터마이징이나 내 것으로 사용하기 수월해진 것 같다 :)
+
