@@ -1,0 +1,144 @@
+---
+layout: post
+title:  "[백준] 18870번-좌표 압축-Java"
+date:   2023-06-02 12:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-02 at 2.32.37 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/18870">[백준] 18870번-좌표 압축</a></center>
+---
+
+## 🖊️풀이법
+
+이번 문제는 너무 복잡하고 비효율적이게 생각해서, 시간초과로 애를 좀 먹었다..<br>
+결론부터 얘기하자면, 너무 어렵게 생각했고 조금 시간을 가진뒤 코드를 다시 보니 쉽게 풀 수 있는 문제 였다 :)<br>
+이번 문제는 배열의 중복을 제거하고, HashMap을 이용해서 중복값을 제거한 후에 해당 요소가 몇번째 요소인지 키값으로 저장 후 기존의 배열과 매칭시켜 출력하는 방식으로 풀었다.
+
+우선, 처음에 삽질한 시간초과 코드를 살펴보자..
+### 시간초과 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine()); //배열의 길이 N에 선언
+        int[] arr = new int[N]; //N길이 만큼의 배열 생성
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken()); //배열에 각각의 요소 담기
+        }
+        int[] distinctArr = Arrays.stream(arr).distinct().toArray(); //스트림을 이용해 중복제거
+        Map<Integer,Integer> map = new HashMap<Integer,Integer>(); 
+        for(int i = 0; i < distinctArr.length; i++){ //각각의 요소들보다 큰값의 요소들을 카운트 해서 value로 담기
+            int count = 0;
+            for(int j = 0; j < distinctArr.length; j++){
+                if(distinctArr[i] > distinctArr[j]){
+                    count++;
+                }
+            }
+            map.put(distinctArr[i], count);
+        }
+        int[] key = new int[map.size()]; //키 배열 선언
+        int[] value = new int[map.size()]; //밸류 배열 선언
+        int tmp = 0;
+        Set<Map.Entry<Integer,Integer>> entrySet = map.entrySet(); // Set타입의 Map.Entry 객체들로 변환
+        for(Map.Entry<Integer,Integer> entry : map.entrySet()) {
+            key[tmp] = entry.getKey(); //키 배열에 키값담기
+            value[tmp++] = entry.getValue(); //밸류 배열에 밸류값 담기
+        }
+        for(int i = 0; i< arr.length; i++){ //배열을 순회하며 기존 배열이 키값과 일치하면 밸류값을 StringBuilder에 담기
+            for(int j = 0; j< distinctArr.length; j++){
+                if(arr[i] == key[j]){
+                    sb.append(value[j]).append(" ");
+                }
+            }
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+지금 생각하면 왜 이렇게 풀었나.. 싶은 생각이 든다.
+
+우선 리팩토링 요소들을 찾아 보았다.
+
+```java
+for(int i = 0; i < distinctArr.length; i++){ //각각의 요소들보다 큰값의 요소들을 카운트 해서 value로 담기
+            int count = 0;
+            for(int j = 0; j < distinctArr.length; j++){
+                if(distinctArr[i] > distinctArr[j]){
+                    count++;
+                }
+            }
+            map.put(distinctArr[i], count);
+        }
+```
+위 코드는 자신보다 큰 요소들을 찾기위해서 시간복잡도 O(N제곱)의 복잡도를 가진다. <br>
+하지만 만약 이중 for문으로 자신보다 큰 요소를 count하는 것이 아니라 배열을 정렬한 뒤 해당 요소들의 순서만 매겨주면 된다.
+
+```java
+        int[] key = new int[map.size()]; //키 배열 선언
+        int[] value = new int[map.size()]; //밸류 배열 선언
+        int tmp = 0;
+        Set<Map.Entry<Integer,Integer>> entrySet = map.entrySet(); // Set타입의 Map.Entry 객체들로 변환
+        for(Map.Entry<Integer,Integer> entry : map.entrySet()) {
+            key[tmp] = entry.getKey(); //키 배열에 키값담기
+            value[tmp++] = entry.getValue(); //밸류 배열에 밸류값 담기
+        }
+        for(int i = 0; i< arr.length; i++){ //배열을 순회하며 기존 배열이 키값과 일치하면 밸류값을 StringBuilder에 담기
+            for(int j = 0; j< distinctArr.length; j++){
+                if(arr[i] == key[j]){
+                    sb.append(value[j]).append(" ");
+                }
+            }
+        }
+
+```
+두 번째는 지금 생각해도 이해가 가지않는다.. <br>
+```map.getKey()```를 이용하면, 간단하게 키와 일치하는  밸류값을 담아낼 수 있는데 왜 굳이 키 배열, 밸류 배열을 생성해서 키와 요소가 일치했을 때 밸류를 StringBuilder에 담으려 했을까.. <br>
+
+그럼 이제 위의 코드를 좀더 효율적이게 수정해보자.
+
+### 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        int[] originArr = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < N; i++) {
+            originArr[i] = Integer.parseInt(st.nextToken());
+        }
+        int[] distinctArr = Arrays.stream(originArr).distinct().sorted().toArray(); 
+        //기존 배열에서 중복제거 후 정렬까지 진행
+        Map<Integer,Integer> map = new HashMap<Integer,Integer>(); 
+        for(int i = 0; i < distinctArr.length; i++){ //정렬된 배열이므로 키 요소의 밸류값을 0부터 증가하며 저장
+            map.put(distinctArr[i], i);
+        }
+        for(int i = 0; i< originArr.length; i++){ //기존의 배열에서 키와 일치하는 밸류의 요소를 StringBuilder에 저장
+                    sb.append(map.get(originArr[i])).append(" ");
+        }
+        System.out.println(sb);
+    }
+}
+```
+위 처럼 코드를 제출할 경우 문제를 통과하게 된다.
+
+---
+
+## 끝으로
+
+다른 정답자 분들을 보면 진짜.. 괴물들이 많은 것 같다.<br>
+직접 퀵소팅, 머지소팅 등 다양한 정렬을 직접구현한 사람도 있고, 가독성이 뛰어난 코드를 구사하시는 분들도 많은 것 같다.<br>
+항상 더 가독성 높고 효율적인 알고리즘에 대해서 고민하고, 리팩토링하자!
