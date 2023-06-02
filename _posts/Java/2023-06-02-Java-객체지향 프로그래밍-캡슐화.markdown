@@ -10,6 +10,154 @@ tags: java
 
 ## 캡슐화
 
+객체지향 프로그래밍의 대표요소 중 캡슐화에 대해서 알아보자.<br>
+**캡슐화**란 클래수 내부의 서로 연관있는 필드와 메서드들을 캡슐처럼 하나의 객체로 패키징 하는 것이다.
+
+캡슐화의 목적은 크게 **두가지** 이다.
+* **데이터 보호** - 클래스에 정의된 필드와 기능들을 외부로부터 보호
+* **데이터 은닉** - 클래스 내부의 데이터들을 감추고 필요한 부분만 외부에 노출
+
+위와 같은 목적을 위해서 객체지향 프로그래밍에서는 캡슐화를 한다.<br>
+그렇다면, 어떻게 캡슐화를 구현할 수 있는지 한번 알아보자.
+
+### 접근제어자 ###
+캡슐화의 첫번째 방법은 **접근제어자**를 이용하는 방법이다.<br>
+접근제어자는 클래스나 클래스 내부에 선언된 필드, 메서드에 선언이 가능하며 4가지의 접근제어자를 사용할 수 있다.
+아래의 표는 4가지 접근제어자의 설명이다.
+
+|접근 제어자|클래스 내부|패키지 내부|다른 패키지의 <br>하위 클래스|패키지 외부|설명|
+|:--------:|:--------:|:--------:|:-------------------:|:--------:|---|
+|```private```|O|X|X|X|**동일 클래스** 내에서만 접근 가능|
+|```default```|O|O|X|X|**동일 패키지** 내에서만 접근 가능|
+|```protected```|O|O|O|X|**동일 패키지** + <br>**다른 패키지 하위 클래스**에서 접근가능|
+|```public```|O|O|O|O|어디서든 접근 가능|
+
+위의 표를 바탕으로, 코드 예제를 보며 이해해보자.
+
+우선 패키지 구조는 다음과 같다.<br>
+.<br>
+├── AccessModifier<br>
+│   ├── Main.java<br>
+│   └── Parent.java<br>
+├── AccessModifier1<br>
+│   └── Child.java<br>
+
+```java
+package AccessModifier;
+
+public class Parent {
+    private int a = 0;
+    int b = 2;
+    protected int c = 3;
+    public int d = 4;
+
+    public void print() {
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(c);
+        System.out.println(d);
+    }
+}
+```
+
+```java
+package AccessModifier;
+
+public class Main {
+    public static void main(String[] args) {
+        Parent p = new Parent();
+//        System.out.println(p.a); //에러
+//        // Parent클래스의 필드 a는 private 접근제어자로 동일 클래스만 접근 가능
+        System.out.println(p.b);
+        System.out.println(p.c);
+        System.out.println(p.d);
+    }
+}
+```
+
+```java
+package AccessModifier1;
+
+import AccessModifier.Parent;
+
+class Child extends Parent {
+    public void print(){
+//        System.out.println(a);
+//        System.out.println(b); //다른 패키지이므로 에러
+        System.out.println(c);
+        System.out.println(d);
+    }
+}
+```
+
+위의 코드와 같이 접근제어자를 이용하면, 클래스의 위치, 패키지의 위치, 상속여부등에 따라서 외부로부터의 접근제어 설정을 해줄 수 있다.
+
+### Getter와 Setter
+캡슐화의 두 번째 방법은 **Getter과 Setter 메서드** 이용이다.<br>
+Getter와 Setter는 접근제어자를 통해 보호하면서 데이터를 변경하는 용도로 이용된다.<br>
+```Getter```,```Setter``` 메서드는 ```get``` 또는 ```Set```을 필드명 앞에 붙혀서 생성 및 사용한다.<br>
+예를 들어 필드의 이름이 name이라면 ```getName()``` or ```setName()```와 같이 메서드를 생성한다.<br>
+Getter의 경우 데이터를 불러올 때, Setter의 경우 데이터를 수정할 때 사용한다.
+
+아래의 코드 예시를 살펴보자.
+
+```java
+package GetterSetter;
+
+public class GetterSetter {
+    public static void main(String[] args) {
+        Human h = new Human();
+        h.setName("홍길동");
+        h.setAge(15);
+        h.setCompany("뉴컴퍼니");
+
+        System.out.println(h.getName());
+        System.out.println(h.getAge());
+        System.out.println(h.getCompany());
+
+//        h.name = "홍길동"; //Human의 필드값이 private으로 에러
+//        System.out.println(h.name); //Human의 필드값이 private으로 에러
+    }
+}
+
+class Human{
+    private String name;
+    private int age;
+    private String company;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+}
+
+//출력
+홍길동
+15
+뉴컴퍼니
+```
+
+이처럼 클래스 내부 private 접근제어자로 감춰진 데이터를 ```h.name = "이름"```으로 수정하는 것이아닌 <br>
+Getter,Setter 메서드를 클래스 내부에 public 접근제어자로 선언하여 데이터를 보다 안전하게 가져오고 수정할 수 있다.
 
 ---
 
@@ -17,10 +165,7 @@ tags: java
 
 ## 정리
 
-* 자바에서 상속은 부모클래스의 필드와 메서드를 자식클래스가 물려받는 것
-    * ```extends```키워드를 통해 부모클래스를 통한 상속을 할 수 있다.
-* 자식클래스는 부모클래스의 메서드를 오버라이딩해서 사용할 수 있다.
-    * 오버라이딩을 위해서는 3가지 조건을 지켜야한다.(메서드 요소 일치, 접근제어자 범위, 예외 선언 개수)
-* ```super```,```super()```키워드를 통해 부모클래스의 필드값과 생성자를 호출할 수 있다.
-* 자바의 상속을 이용하면, 불필요한 코드를 줄이고 가독성을 높일 수 있다.
+* 캡슐화란 데이터를 보호하고 은닉하기 위해 사용한다.
+* 접근제어자를 이용하여, 클래스 외부로 불필요한 데이터 노출을 방지하고 데이터를 보호한다.
+* Getter,Setter 메서드를 이용하여 보호된 데이터를 보다 안전하게 불러오고 수정한다.
 
