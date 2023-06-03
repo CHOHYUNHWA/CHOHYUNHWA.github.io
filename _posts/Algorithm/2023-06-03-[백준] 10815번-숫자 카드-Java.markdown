@@ -1,0 +1,67 @@
+---
+layout: post
+title:  "[백준] 10815번-숫자 카드-Java"
+date:   2023-06-03 12:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-03 at 5.37.34 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/10815">[백준] 10815번-숫자 카드</a></center>
+---
+
+## ❓문제
+
+문제는 매우 간단한 편이다.<br>
+두가지의 배열을 받아서 1번째 배열이 기준이 되어, 1번째 배열의 요소가 2번째 배열의 요소에 있는 경우 1 아니면 0을 출력하면 된다.
+
+
+## 🖊️풀이법
+
+Map을 사용한다면, 굳이 배열의 요소들을 하나하나씩 모두 검사(2중 for문같은)하는 불필요한 로직을 줄일 수 있다.<br>
+Map은 한쌍의 키와 밸류 값으로 이루어져 있다.
+
+1. ```key -> 주어진 element``` , ```value -> 1```로 ```Map 타입의``` ```map 객체```를 하나 생성한다.
+2. 두번째 요소들을 기존에 생성된 ```map``` 객체의 ```map.get()```메서드로 호출 한 후 ```value```값을 ```StringBuilder```에 담는다.
+
+여기서 만약 없는 키값을 입력할 경우, ```null```로 ```Value```값이 반환되니 ```null```로 반환될 시 ```0```을 ```StringBuilder```에 담도록 예외처리를 해주면 된다.
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        Map<Integer,Integer> map = new HashMap<>();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < N; i++){ 
+            map.put(Integer.parseInt(st.nextToken()),1); //요소들을 map에 키(요소)와 밸류(1)를 저장
+        }
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < M; i++){
+            int tmp = Integer.parseInt(st.nextToken());
+            if(map.get(tmp) == null){ //만약 대조되는 키가 없어 null이 반환될 경우 0을 sb에 추가
+                sb.append(0).append(" ");
+            } else {
+                sb.append(map.get(tmp)).append(" "); //일치하는 요소가 있는 경우 value값인 1을 sb에 추가
+            }
+        }
+        System.out.println(sb); //출력
+    }
+}
+```
+
+---
+
+## 끝으로
+
+이번 문제는 간단하게 Map을 다루는 법을 체크하는 문제 같았다.<br>
+단계가 높아짐에 따라서 점점 사용되는 컬렉션요소들이 늘어나니 항상 잘 기억하고 학습하자.
+
