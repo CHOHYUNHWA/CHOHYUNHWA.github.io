@@ -1,0 +1,101 @@
+---
+layout: post
+title:  "[백준] 14425번-문자열 집합-Java"
+date:   2023-06-04 12:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-04 at 2.41.13 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/14425">[백준] 14425번-문자열 집합</a></center>
+---
+
+## ❓문제
+
+N개만큼 주어진 문자열 요소들이 M개만큼 주어진 문자열 요소들과 몇개가 일치하는지 카운팅 한 후 그 값을 출력하면 되는 문제이다.
+
+## 🖊️풀이법
+
+이번문제는 자바의 두가지 컬렉션 ```Map``` 또는 ```List```를 이용하면 풀수 있다.<br>
+```Set```은 안되냐는 궁금증이 있을 수 있다.. ```Set```에는 ```contains``` 포함여부를 확인하는 메서드가 없기 때문에 비교요소(M 요소)에는 ```Set```사용이 제한적이다.<br>
+따라서 이번 문제는 Map과 List를 사용하여 풀면 손쉽게 풀 수 있다.
+
+
+1. N개의 문자열(기준 문자열 요소)을 먼저 List 혹은 Map에 담아준다.
+2. 요소가 포함되어있는 경우 카운트를 할 수 있도록 ```int```타입의 ```count```를 초기화 시켜준다.
+3. ```Map```을 사용한 경우 ```containsKey```메서드를, ```List```를 사용한 경우 ```contains``` 메서드를 반복문을 순회하며 확인 후 해당 요소가 포함하는 경우 ```count``` 값을 +1 해나간다.
+4. 출력문을 통해 ```count```값을 반환한다.
+
+### Map 사용 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int count = 0;
+        HashMap<String,Integer> map = new HashMap<String,Integer>();
+        for(int i = 0; i < N; i++) {
+            map.put(br.readLine(),1); //N 문자열 요소를 map객체에 담기
+        }
+        for(int i = 0; i < M; i++){ // M에 N의 키값이 있는 경우 count++
+            if(map.containsKey(br.readLine())){
+                count++;
+            }
+        }
+        System.out.println(count);
+    }
+}
+```
+
+### List 사용 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        ArrayList<String> nStr = new ArrayList<>();
+        ArrayList<String>  mStr= new ArrayList<>();
+        int count = 0;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        for (int i = 0; i < N; i++) {
+            nStr.add(br.readLine()); 
+        }
+        for (int i = 0; i < M; i++) {
+            mStr.add(br.readLine());
+        }
+        for (int i = 0; i < M; i++) {
+            if(nStr.contains(mStr.get(i))){
+                count++;
+            }
+        }
+        System.out.println(count);
+    }
+}
+```
+
+---
+
+## 끝으로
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-04 at 3.08.22 PM.png)
+위의 사진과 같이 List보다 Map을 사용하여 푸는 것이 훨씬 시간이 적게 드는 것을 확인 할 수 있다.<br>
+* ```HashMap```의 ```containsKey```메서드는 O(1)의 시간복잡도
+* ```ArrayList```의 ```contains```메서드는 O(N)의 시간복잡도
+
+와 같이 시간복잡도의 차이 때문이다.<br>
+따라서 자바의 메서드가 가지는 각각의 특성을 잘 이해하고 알맞은 곳에 사용할 수 있도록 하자.
+
+
