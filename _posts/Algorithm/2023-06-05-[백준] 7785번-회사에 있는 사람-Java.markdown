@@ -1,0 +1,65 @@
+---
+layout: post
+title:  "[백준] 7785번-회사에 있는 사람-Java"
+date:   2023-06-05 10:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-05 at 10.35.22 AM.png)
+### <center><a href="https://www.acmicpc.net/problem/7785">[백준] 7785번-회사에 있는 사람-Java</a></center>
+---
+
+## ❓문제
+
+N명의 직원의 출입기록을 ```이름```+ (```enter```or```leave```) 형태로 받아 ```leave```기록이 없는 직원을 사전 역순으로 출력해주면 된다.
+
+## 🖊️풀이법
+
+문제만 봐도 ```key```와 ```value```매칭을 이용한 Map을 사용해야 하는 느낌이 온다..!
+
+1. 반복문을 통해 주어진 요소들을 ```Map```에 ```key```와 ```value```로 요소들을 담는다.
+2. 담긴 요소에서 ```value```값을 조회하여, 만약 ```value```값이 ```leave```인 경우 map에서 제거해준다.
+3. 맵 객체에서 정렬을 할 수 있도록 ```list```객체로 변환해준다.
+4. ```list```객체를 사전 역순으로 정렬한다.
+5. 정렬된 ```list```를 하나의 요소씩 출력한다.
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine()); //총 출입기록을 N에 할당
+        Map<String,String> map = new HashMap<>();
+        for(int i = 0; i < N; i++){ 
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            String key = st.nextToken();
+            String value = st.nextToken();
+            map.put(key, value); //반복문을 통해 map에 출입기록 입력
+            if(map.get(key).equals("leave")){ //만약 출입기록이 leave인 경우 map에서 삭제
+                map.remove(key);
+            }
+        }
+        ArrayList<String> list = new ArrayList<String>(map.keySet()); //map의 키값들을 list객체에 할당
+        Collections.sort(list,Collections.reverseOrder()); //사전 역순으로 정렬
+        for(int i = 0; i < list.size(); i++){
+            sb.append(list.get(i)).append('\n');
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+## 끝으로
+
+```Map```에서 제공하는 ```keySet()```,```entrySet()```등 맵의 요소들을 변환시키기 유용한 메서드들을 잘 활용하자 :) 
+
+
