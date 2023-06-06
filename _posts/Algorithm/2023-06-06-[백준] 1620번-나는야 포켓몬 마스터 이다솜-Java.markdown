@@ -1,0 +1,123 @@
+---
+layout: post
+title:  "[백준] 1620번-나는야 포켓몬 마스터 이다솜-Java"
+date:   2023-06-06 10:22:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/screencapture-acmicpc-net-problem-1620-2023-06-06-15_58_21.png)
+### <center><a href="https://www.acmicpc.net/problem/1620">[백준] 1620번-나는야 포켓몬 마스터 이다솜-Java</a></center>
+---
+
+## ❓문제
+
+이번 문제는 포켓몬을 이용한 아주 재미있는 알고리즘이다. ㅋㅋ <br>
+1. 첫번째 줄에는 포켓몬 도감 리스트의 수(N)과 맞춰야 하는 문제의 개수 M이 주어진다.
+2. 두번째 줄부터는 포켓몬의 이름들과 맞춰야하는 문제의 개수가 하나씩 입력된다. 
+3. 도감 리스트에 입력된 순서대로 1번부터 오름차순으로 포켓몬 번호가 매겨진다.
+3. 맞춰야하는 문제의 이름으로 입력될 경우 포켓몬 번호를, 포켓몬 번호로 입력된 경우 포켓몬 이름을 하나씩 출력한다.
+
+## 🖊️풀이법
+
+### try/catch 풀이
+1. ```Map```과 ```String 배열```을 생성하여 ```Map```에는 키에는 포켓몬 이름, 밸류에는 포켓몬 번호를 넣고, ```String 배열```에는 각각의 포켓몬 이름을 넣어준다.
+2. 문제에서 들어오는 입력 값이 문자열인지 숫자인지 검증하고 ```boolean```타입으로 반환하는 메서드를 생성한다.
+3. 문제의 수만큼 반복문을 실행하며, 문자열인지 숫자인지 검증한 뒤 문자열인 경우 해당하는 밸류값(포켓몬 번호)을 반환, 숫자인 경우 ```String 배열```에서 해당하는 ```포켓몬 이름```을 반환한다.
+
+### Ascii코드를 이용한 풀이
+1. ```Map```과 ```String 배열```을 생성하여 ```Map```에는 키에는 포켓몬 이름, 밸류에는 포켓몬 번호를 넣고, ```String 배열```에는 각각의 포켓몬 이름을 넣어준다.
+2. 입력된 문제가 포켓몬이름인지, 숫자인지 아스키코드 넘버를 이용해 확인한다.
+3. 문제의 수만큼 반복문을 실행하며, 문자열인지 숫자인지 검증한 뒤 문자열인 경우 해당하는 밸류값(포켓몬 번호)을 반환, 숫자인 경우 ```String 배열```에서 해당하는 ```포켓몬 이름```을 반환한다.
+
+
+
+### try/catch를 통한 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        Map<String, Integer> map = new HashMap<>();
+        String[] strArr = new String[N+1];
+        for (int i = 1; i <= N; i++) {
+            String name = br.readLine();
+            map.put(name, i); //포켓몬 이름을 키에 밸류에 포켓몬 번호를 담는다.
+            strArr[i] = name; //포켓몬 이름을 순서대로 배열에 담는다.
+        }
+        for (int i = 0; i < M; i++) {
+            String tmp = br.readLine();
+            if(!isCheckInt(tmp)){ //Int가 아닌경우 String으로 입력받아 map의 밸류값을 더한다.
+                sb.append(map.get(tmp)).append('\n');
+            } else { //입력값이 Int인 경우 String[] 에서 i번째 순서의 포켓몬 이름을 더한다.
+                sb.append(strArr[Integer.parseInt(tmp)]).append('\n');
+            }
+        }
+        System.out.println(sb);
+    }
+    static boolean isCheckInt(String s){ //문제 입력값이 Int 인지 문자인지 검증하는 메서드
+        try{
+            Integer.parseInt(s);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+### Ascii 코드를 이용한 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        Map<String, Integer> map = new HashMap<>();
+        String[] strArr = new String[N+1];
+        for (int i = 1; i <= N; i++) {
+            String name = br.readLine();
+            map.put(name, i);
+            strArr[i] = name;
+        }
+        for (int i = 0; i < M; i++) {
+            String tmp = br.readLine();
+            if(tmp.charAt(0) >= 65){ //대문자 A의 아스키 코드는 65부터 시작한다.
+                sb.append(map.get(tmp)).append('\n');
+            } else {
+                sb.append(strArr[Integer.parseInt(tmp)]).append('\n');
+            }
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+## 정리
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-06 at 4.39.15 PM.png)
+
+이번 문제는 ```Map```과 ```Exception```을 처리할때 사용하는 ```try/catch```문을 사용하면 손쉽게 풀 수있다.<br>
+이후 좀더 효율적인 방법이 없을까 하고 생각하던중 Ascii코드를 이용하여 풀어보았다.<br>
+결과는 사진과같이 아스키코드를 이용하면 효율이 훨씬 좋았다.<br>
+이유는 ```char```자체를 비교하기때문에 별도의 메서드가 저장되는 메모리 공간의 사용이 줄고, 별도의 로직을 거치지 않기 때문이다.<br>
+항상 생각하고 개선하고 발전하자.
+
+
+
+
+
