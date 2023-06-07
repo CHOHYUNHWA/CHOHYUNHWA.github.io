@@ -1,0 +1,80 @@
+---
+layout: post
+title:  "[백준] 10816번-숫자 카드 2-Java"
+date:   2023-06-07 10:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-07 at 10.02.08 AM.png)
+### <center><a href="https://www.acmicpc.net/problem/10816">[백준] 10816번-숫자 카드 2-Java</a></center>
+---
+
+## ❓문제
+
+1. 첫째줄에 정수 M이 주어진다.
+2. 둘째 줄에는 M개의 요소가 주어진다.
+3. 셋째 줄에는 정수 N이 주어진다.
+4. 넷째 줄에는 N개의 요소가 주어진다.
+5. N개의 요소가 M개의 요소에서 몇개를 가지고 있는지 출력한다.
+
+
+## 🖊️풀이법
+
+1. M크기의 ```Integer```객체를 요소로 가지는 ```HashMap```을 생성한다.
+2. M요소들을 ```HashMap```의 ```Key```값에 넣어주고, ```Value```값을 1로 넣어준다.
+3. 만약 요소의 ```Key```값이 존재한다면 해당 ```Value```값은 ```+1``` 해준다.
+4. 모든 요소를 ```Map```에 넣어준뒤 N크기의 ```int배열```을 선언한다.
+5. N만큼 반복문을 순회하며, 배열에 N의 요소들을 ```map.get()```메서들을 이용해 ```Value```값을 조회한다.
+6. 조회한 ```Value```값을 ```StringBuilder```에 담은 후 출력한다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int M = Integer.parseInt(br.readLine());
+        Map<Integer,Integer> map = new HashMap<Integer, Integer>();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0 ; i < M ; i++) {
+            int tmp = Integer.parseInt(st.nextToken());
+            if (map.containsKey(tmp)) {
+                int value = map.get(tmp).intValue();
+                map.put(tmp, value + 1);
+            } else {
+                map.put(tmp, 1);
+            }
+        }
+        int N = Integer.parseInt(br.readLine());
+        int[] answer = new int[N];
+        st= new StringTokenizer(br.readLine());
+        for(int i = 0; i<N; i++){
+            int tmp = Integer.parseInt(st.nextToken());
+            if(map.get(tmp)==null){
+                answer[i] =0;
+            } else {
+                answer[i] = map.get(tmp);
+            }
+            sb.append(answer[i]).append(" ");
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제는 Map객체에서 Value의 값을 핸들링하는 것이 관건인 문제였다.<br>
+위에서는 계속해서 ```map.put()```을 통해서 Value값을 핸들링 해줬지만 ```Java8```이후에는 ```map.merge()```메서드를 이용하여 문제를 풀 수도 있다.<br>
+또한, ```CountSort```를 이용하여 풀 수 있는데 그 경우, ```20,000,001``` 크기만큼의 ```int배열```을 생성해야 하기때문에 메모리를 많이 필요로하지만, 계산시간은 더 빠르다.
+
+
+
+
