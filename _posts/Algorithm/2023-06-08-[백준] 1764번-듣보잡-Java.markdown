@@ -1,0 +1,70 @@
+---
+layout: post
+title:  "[백준] 1764번-듣보잡-Java"
+date:   2023-06-08 10:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-08 at 4.50.50 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1764">[백준] 1764번-듣보잡-Java</a></center>
+---
+
+## ❓문제
+
+이번 문제는 두가지 N과, M요소를 입력받아서 요소가 두가지 다 포함하고 있는 요소를 사전 오름차순으로 반환하면 된다.
+
+
+## 🖊️풀이법
+
+1. N요소를 ```HashSet```객체에 담는다.
+2. M요소를 순서대로 Set객체에 포함하는지 확인한다.
+3. N,M 요소에 모두 다 포함되는 경우 ```ArrayList```에 담는다.
+4. ```ArrayList```를 정렬한다.
+5. ```ArrayList```의 크기와 요소를 출력한다.
+
+### 정답 코드
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = N+Integer.parseInt(st.nextToken());
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i< N; i++){
+            String key = br.readLine();
+            list.add(key);
+        }
+        ArrayList<String> arr = new ArrayList<>();
+        for(int i = 0; i<N; i++ ){
+            String key = br.readLine();
+            if(list.contains(key)){
+                arr.add(key);
+            }
+        }
+        Collections.sort(arr);
+        sb.append(arr.size()).append('\n');
+        for(String a : arr){
+            sb.append(a).append('\n');
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+## 정리
+
+간단하게 풀 수 있는 문제지만, 여기서 핵심은 ```Set```객체를 이용하는 것이다.<br>
+```Set```의 ```contains```메서드는 시간 복잡도가 O(1)로 매우 빨라 탐색에 용이한 반면, ```List```의 ```contains```메서드는 시간복잡도가 O(n)으로 만약 ```List```로 풀 경우 시간초과가 나오게 된다.<br>
+하지만, ```Set```은 중복을 허용하지 않고 순서를 보장하지않으며, ```List```는 중복을 허용하며 순서를 보장하기 때문에 두가지의 특성을 잘 고려하여 사용하자.
+
+
+
