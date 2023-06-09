@@ -1,0 +1,141 @@
+---
+layout: post
+title:  "Java-열거형(Enum)"
+date:   2023-06-09 10:42:00 +0900
+categories: java
+tags: java
+---
+
+## Java-열거형(Enum)
+
+## 열거형(Enum)
+
+Enum이란, enumerated type의 줄임말로 열거형이라고 한다.<br>
+Enum은 여러가지 상수들을 보다 편리하게 선언하고 사용할 수 있도록 만들어진 **상수들의 집합**이다.<br>
+
+```java
+class EnumExample{
+    public static final int SPRING = 1;
+    public static final int SUMMER = 2;
+    public static final int FALL = 3;
+    public static final int WINTER = 4;
+
+    public static final int SPRING = 1;
+    public static final int NODE = 2; // 똑같은 변수 값으로 에러 발생
+    public static final int DJANGO = 3;
+    public static final int EXPRESS = 4; 
+}
+```
+
+위와 같이 기존의 방식대로 상수를 정의할 경우에는 상수명이 중복되는 경우가 발생할 수 있다.<br>
+
+```java
+interface Season{
+    int SPRING = 1;
+    int SUMMER = 2;
+    int FALL = 3;
+    int WINTER =4;
+}
+
+interface Framework{
+    int NODE = 1;
+    int SPRING = 2;
+    int DJANGO =3;
+    int EXPRESS =4;
+}
+```
+
+상수명의 중복을 해결하기 위해서 인터페이스를 사용함으로써 문제를 해결할 수 있다.<br>
+하지만 두가지의 상수가 서로 다른 인터페이스의 필드임에도 불구하고 아래의 코드와 같이 두 상수를 비교할 수 있기 때문에 타입 안정성이 떨어진다는 문제가 생긴다.
+
+```java
+if(Season.SPRING == Framework.SPRING){
+    return true;
+}
+```
+
+이를 해결하기 위해서는 인터페이스가 아닌 서로 다른 객체로 만들어 주어야한다.
+
+```java
+class Seaons{
+    public static final Season SPRING = new Season();
+    public static final Season SUMMER = new Season();
+    public static final Season FALL = new Season();
+    public static final Season WINTER = new Season();
+}
+
+class Frameworks {
+    public static final Frameworks NODE = new Frameworks();
+    public static final Frameworks SPRING = new Frameworks();
+    public static final Frameworks DJANGO = new Frameworks();
+    public static final Frameworks EXPRESS = new Frameworks();
+}
+```
+
+각각의 상수에 타입을 구분하여, 선언한다면 타입의 안정성을 보장받을 수 있지만 **코드가 너무 길어지고**, 사용자 정의 타입이기 때문에 ```switch문```에 사용할 수 없는 문제가 발생한다.
+
+```java
+enum Season{ SPRING, SUMMER, FALL, WINTER}
+enum Framework{ NODE, SPRING, DJANGO, EXPRESS}
+```
+
+위와 같이 enum으로 상수를 정의할 경우에는 보다 간단하게 상수를 정의할 수 있으며, ```switch문```에서도 사용이 가능하게 된다.
+
+### Enum사용 방법
+
+Enum의 정의와 사용방법은 다음과 같다.
+```java
+enum 열거형이름 {상수명, 상수명2, 상수명3}
+```
+
+예시
+```java
+enum Season{ SPRING, SUMMER, FALL, WINTER}
+enum Framework{ NODE, SPRING, DJANGO, EXPRESS}
+```
+
+상수명은 대소문자 모두 선언이 가능하지만, 관례적으로 대문자로 작성한다.<br>
+상수에는 별도로 값을 지정해주지 않아도 0부터 정수값이 할당되어 각각의 상수를 가르킨다.
+
+```java
+public class EnumExample {
+    public static void main(String[] args) throws Exception {
+        Season spring = Season.SPRING;
+
+        switch(spring){
+            case SPRING:
+                System.out.println("봄");
+                break;
+            case SUMMER:
+                System.out.println("여름");
+                break;
+            case FALL:
+                System.out.println("가을");
+                break;
+            case WINTER:
+                System.out.println("겨울");
+                break;
+        }
+        System.out.println("SPRING = "+Season.SPRING.ordinal());//상수에 할당된 정수 값 확인
+
+    }
+}
+
+enum Season{ SPRING, SUMMER, FALL, WINTER}
+
+//출력
+봄
+SPRING = 0
+```
+
+설명과 같이 enum은 ```switch문```에서 사용할 수 있으며, ```ordinal()```메서드를 통하여 상수에 할당된 정수 값도 확인할 수 있다.
+
+### 정리
+
+* Enum은 상수들을 보다 편리하게 사용하기 위한 상수들의 집합이다.
+* 코드가 단순해지고 가독성이 높아진다.
+* 인스턴스 생성,상속을 방지하여 타입의 안정성을 보장받게 된다.
+
+
+
+
