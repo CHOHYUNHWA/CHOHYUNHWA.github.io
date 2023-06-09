@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "[백준] 11478번-서로 다른 부분 문자열의 개수-Java"
+date:   2023-06-09 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-09 at 1.55.27 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/11478">[백준] 11478번-서로 다른 부분 문자열의 개수-Java</a></center>
+---
+
+## ❓문제
+
+1. 하나의 문자열을 입력받아 만들 수 있는 모든 문자열의 개수를 출력하면 된다.
+
+예시. ```ababc```의 경우 만들 수 있는 문자열의 개수는 ```a,b,c,ab,ba,bc,aba,bab,abc,abab,babc,ababc```로 12를 출력하면 된다.
+
+
+## 🖊️풀이법
+
+1. 입력받을 문자열을 ```a```에 담는다.
+2. ```Set```을 이용하여, 해당 문자열이 만들 수 있는 모든 경우의 수를 담는다.
+3. ```Set```객체의 size를 반환한다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        String a = br.readLine();
+        Set<String> set = new HashSet();
+        for(int i = 0; i <= a.length(); i++){
+            for(int j = i+1; j <= a.length(); j++){
+                set.add(a.substring(i,j));
+            }
+        }
+        System.out.println(set.size());
+    }
+}
+```
+
+---
+
+## 정리
+
+중복을 허용하지 않는 Java의 컬렉션 중 하나인 ```Set```을 이용하면 손쉽게 풀 수있다.<br>
+오히려, 해당 문제는 어떤식으로 반복하여, 문자열로 나타낼 수 있는 모든 요소를 ```Set```에 담을건가가 관건인 문제이다.
+
+
+

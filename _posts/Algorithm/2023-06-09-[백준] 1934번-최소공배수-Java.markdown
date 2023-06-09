@@ -1,0 +1,93 @@
+---
+layout: post
+title:  "[백준] 1934번-최소공배수-Java"
+date:   2023-06-09 12:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-09 at 2.06.02 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1934">[백준] 1934번-최소공배수-Java</a></center>
+---
+
+## ❓문제
+
+1. 테스트 케이스의 개수와 각각의 케이스의 두 자연수를 입력 받아 최소공배수를 구하면된다.
+
+
+## 🖊️풀이법
+
+최소공배수를 구하는 방법은 간단하다.<br>
+두 자연수의 곱을 최대공약수로 나눠주면, 최소공배수를 얻을 수있다.<br>
+
+1. 테스트 케이스 수를 int타입의 ```T```에 담는다.
+2. 최대공약수를 구하는 ```getGCD```를 선언한다.
+3. 최소공배수를 구하는 ```getLCM```을 선언한다.
+4. 반복문을 통해 테스트 케이스 만큼 요소들을 ```getLCM```메서드를 연산하여 결과를 출력한다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int answer = getLCM(a,b);
+            sb.append(answer).append('\n');
+        }
+        System.out.println(sb);
+    }
+    static int getGCD(int num1, int num2){
+        if(num1%num2 == 0){
+            return num2;
+        }
+        return getGCD(num2,num1%num2);
+    }
+
+    static int getLCM(int num1, int num2){
+        int gcd = getGCD(num1,num2);
+        return num1*num2/gcd;
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제의 핵심은 최대공약수를 구하는 방법이다.<br>
+최대 공약수란 여러가지의 자연수가 존재 할 때, 해당 자연수들을 나눴을 때 0이되는 값 중 가장 큰 수를 최대공약수라고 한다.<br>
+일반적으로 수학에서 최대공약수는 소인수분해를 통하여, 구할 수 있지만 이는 연산도 많아지고, 메모리도 많이들어간다.<br>
+따라서, 최대공약수는 ```유클리드 호제법```으로 구하면, 효과적이고 짧게 구할 수 있다.<br>
+이번 포스팅에서는 간단한 유클리드 호제법 알고리즘만 간략하게 소개하고, 보다 자세한 내용은 다음에 다루도록 하겠다.
+
+### 유클리드 호제법
+
+유클리드 호제 법 알고리즘은 다음과 같다.
+
+```java
+int int getGCD(int num1, int num2){
+        if(num1%num2 == 0){
+            return num2;
+        }
+        return getGCD(num2,num1%num2);
+    }
+```
+
+1. 두 수 ```num1```을 ```num2```로 나누어 0이 될 경우 ```num2```가 최대공약수가 된다.
+2. 만약 나머지가 0이 아닐 경우 ```num2```를 ```num1%num2```로 다시 나눈다.
+3. 두 수를 나눴을 때 나머지가 0이 될때까지 반복한다.
+
+재귀를 이용한 해당 알고리즘을 사용하면 최대공약수를 구할 수 있다.
+
+
+
+
