@@ -1,0 +1,69 @@
+---
+layout: post
+title:  "[백준] 1735번-분수 합-Java"
+date:   2023-06-10 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-10 at 4.01.29 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1735">[백준] 1735번-분수 합-Java</a></center>
+---
+
+## ❓문제
+
+1. 첫째 줄과 둘째 줄에, 각 분수의 분자와 분모를 뜻하는 두개의 자연수를 받는다.
+2. 두 분수를 더한다.
+3. 두 분수의 합을 기약분수로 분자와 분모로 출력한다.
+
+## 🖊️풀이법
+
+최대 공약수를 구할 수 있으면, 간단하게 풀 수 있는 문제이다.
+
+1. 두 분수를 먼저 같은 분모를 일치시켜주고, 해당 분모의 비율만큼 분자를 만들어 준다.
+2. 두 분수를 더한다.
+3. 두 분수를 최대 공약수로 나눈 후 출력한다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int top1 = Integer.parseInt(st.nextToken());
+        int bottom1 = Integer.parseInt(st.nextToken());
+
+        st = new StringTokenizer(br.readLine());
+        int top2 = Integer.parseInt(st.nextToken());
+        int bottom2 = Integer.parseInt(st.nextToken());
+
+        int answerTop = top1 * bottom2+ top2 * bottom1;
+        int answerBottom = bottom1 * bottom2;
+
+        int gcd = getGCD(answerTop, answerBottom);
+        sb.append(answerTop/gcd).append(" ").append(answerBottom/gcd);
+        System.out.println(sb);
+    }
+    static int getGCD(int num1 , int num2){
+        if(num1%num2==0){
+            return num2;
+        }
+        return getGCD(num2, num1%num2);
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제는 분수의 더하기를 구하는 방법과 최대공약수를 구하는 알고리즘만 안다면, 간단히 대입하여 풀 수 있는 문제이다.
+
+
+
