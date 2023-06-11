@@ -71,7 +71,7 @@ public class Main {
 
 ### 유클리드 호제법
 
-유클리드 호제 법 알고리즘은 다음과 같다.
+유클리드 호제법 알고리즘은 다음과 같다.
 
 ```java
 int int getGCD(int num1, int num2){

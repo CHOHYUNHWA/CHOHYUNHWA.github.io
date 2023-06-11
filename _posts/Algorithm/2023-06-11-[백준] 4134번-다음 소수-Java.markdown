@@ -1,0 +1,97 @@
+---
+layout: post
+title:  "[백준] 4134번-다음 소수-Java"
+date:   2023-06-10 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-11 at 1.01.17 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/4134">[백준] 4134번-다음 소수-Java</a></center>
+---
+
+## ❓문제
+
+1. 테스트케이스의 개수와 각각의 테스트의 정수 n을 입력받아 n보다 크거나 같은 소수 중 가장 작은 소수를 출력하라.
+
+**정수 n의 범위는 0\<= n \<= 4*10의9승 이다.**
+
+## 🖊️풀이법
+
+1. 소수를 구하는 메서드를 정의한다.
+2. 입력받은 정수에서 반복문을 순회하며 소수가 나올때까지 +1 하며 소수인지 검증한다.
+3. 소수일 경우 출력한다.
+
+### 정답 코드
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        for(int i = 0; i<N; i++){
+            long tmp = Long.parseLong(br.readLine());
+            while(true){
+                if(getPrime(tmp)){
+                    sb.append(tmp).append('\n');
+                    break;
+                }
+                tmp++;
+            }
+        }
+        System.out.println(sb);
+    }
+    static boolean getPrime(long a){
+        if(a < 2){
+            return false;
+        }
+        for(long i = 2; i<= Math.sqrt(a); i++){
+            if(a%i == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제는 소수를 찾는 알고리즘만 안다면 간단하게 풀 수 있다.<br>
+
+### **소수 구하는 법**
+
+다음 코드를 살펴보자.
+```java
+static boolean getPrime(long a){ 
+        if(a < 2){
+            return false;
+        }
+        for(long i = 2; i<= Math.sqrt(a); i++){
+            if(a%i == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+```
+
+1. 정수 a를 입력 받는다.
+2. 만약 정수 a가 2보다 작은 수이면, 소수가 아님으로 ```false```를 리턴
+3. 소수는 약수가 1과 자기자신 밖에 없는 수이므로 i가 2부터 시작해서 $$ \sqrt{a} $$ 보다 커질때까지 +1을 반복하며 a%i가 0인지 확인한다.
+4. 만약 a%i가 0일 경우 소수가 아니므로 ```false```를 리턴
+5. 모든 반복문을 순회했다면 1과 자기자신 외에 약수가 없으므로 ```true```를 리턴한다.
+
+소수를 찾을 때 왜 $$ \sqrt{a} $$까지만 반복문을 순회하는지에 대해 더 알고 싶다면,
+ <a href="https://ko.wikipedia.org/wiki/%EC%97%90%EB%9D%BC%ED%86%A0%EC%8A%A4%ED%85%8C%EB%84%A4%EC%8A%A4%EC%9D%98_%EC%B2%B4">에라토스테네스의 체</a>에 대하여 검색해보자.<br>
+
+
+
+
+
+

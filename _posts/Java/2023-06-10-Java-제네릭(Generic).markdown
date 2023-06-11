@@ -210,7 +210,7 @@ import java.util.List;
 
 public class WildCardExample {
     public static void main(String[] args) {
-                List<String> strList = Arrays.asList("one", "two", "three");
+        List<String> strList = Arrays.asList("one", "two", "three");
         List<Integer> intList = Arrays.asList(0,1,2,3,4);
         printList(strList);//에러
         printList(intList);//에러
