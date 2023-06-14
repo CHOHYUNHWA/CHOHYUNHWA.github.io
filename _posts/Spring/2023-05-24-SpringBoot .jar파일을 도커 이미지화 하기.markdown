@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "서버파일을 도커 이미지화 하기"
-date:   2022-10-28 14:42:00 +0900
-categories: devops
-tags: devops
+title:  "SpringBoot .jar파일을 도커 이미지화 하기"
+date:   2023-05-24 14:42:00 +0900
+categories: spring
+tags: spring
 ---
 
 ### 서버파일을 도커 이미지화 하기

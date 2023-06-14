@@ -3,14 +3,14 @@
 layout: list
 
 # The title of the tag's page.
-title: DevOps
+title: DataBase
 
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
-slug: devops
+slug: database
 
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: >
-  > DevOps 학습과 기록 저장소
+  > DataBase 학습과 기록 저장소
 
 # (Optional) You can disable grouping posts by date.
 # no_groups: true
@@ -20,5 +20,5 @@ description: >
 type: category
 menu : true
 sitemap: false
-order: 5
+order : 5
 ---

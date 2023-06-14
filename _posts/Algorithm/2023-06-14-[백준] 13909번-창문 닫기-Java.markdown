@@ -1,0 +1,73 @@
+---
+layout: post
+title:  "[백준] 13909번-창문 닫기-Java"
+date:   2023-06-14 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-14 at 11.18.20 AM.png)
+### <center><a href="https://www.acmicpc.net/problem/13909">[백준] 13909번-창문 닫기-Java</a></center>
+---
+
+## ❓문제
+
+N개의 창문과 N명의 사람이 있을 때, N번째 사람은 N의 배수 번째 창문이 열려있으면 닫고, 닫혀있으면 연다.<br>
+해당 과정을 1부터 N번째 사람까지 반복한다.
+* 예시 (N이 3인 경우)
+  * 3명의 사람과 3개의 창문이 존재한다.
+  * 1번째 사람은 1의 배수인 1,2,3번 창문을 연다. (1, 1, 1)
+  * 2번째 사람은 2의 배수인 2번 창문을 닫는다. (1, 0, 1)
+  * 3번째 사람은 3의 배수인 3번 창문을 닫는다. (1, 0, 0)
+* 결과적으로 마지막에 열려 있는 창문의 개수는 1개이다.
+
+### N의 범위
+**1 ≤ N ≤ 2,100,000,000**
+
+
+## 🖊️풀이법
+
+해당 문제는 N의 수에 따라 결과 값을 패턴을 분석하면, 아주 가볍게 풀 수 있다.<br>
+우선 N의 범위부터 살펴보자.<br>
+N의 최대값은 2,100,000,000으로 정수형 ```int```타입으로 표현이 가능하다.<br>
+N의 최대값이 21억이기 때문에 반복문을 통한 문제해결은 시간과 메모리 제한으로 힘들다.<br>
+따라서, 입력값에 따른 결과값의 패턴을 분석하여, 문제를 해결해보자.<br>
+그 후에 N의 입력 값에 따른 결과 값을 1~24까지 구해보았다.<br>
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-14 at 11.19.51 AM.png)
+시트를 한번 살펴보자.<br>
+* N의 값이  1~3 사이의 경우  -> 결과 값 1
+* N의 값이  4~8 사이의 경우  -> 결과 값 2
+* N의 값이  9~15 사이의 경우  -> 결과 값 3
+* N의 값이  16~24 사이의 경우  -> 결과 값 4  이다.
+해당 N의 최소 값과 최대 값을 살펴보면 최소값의 제곱근의 값이 결과값으로 나타나는 것을 알 수 있다.<br>
+따라서 해당 문제는 간단하게 N의 제곱근 값을 정수형으로 반환하면 해결이 가능하다.
+
+### 정답 코드
+
+```java
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        
+        System.out.println((int)Math.sqrt(N));
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제는 패턴만드는게 더 힘든 문제였다.<br>
+패턴의 경우의 수를 최소한으로 해서 패턴을 찾는 연습을 하자.
+
+
+
+
+
+
