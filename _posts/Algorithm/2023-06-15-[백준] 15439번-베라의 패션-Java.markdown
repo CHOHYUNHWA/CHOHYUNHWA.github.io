@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "[백준] 15439번-베라의 패션-Java"
+date:   2023-06-15 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-15 at 2.08.10 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/15439">[백준] 15439번-베라의 패션-Java</a></center>
+---
+
+## ❓문제
+
+상의 N벌과 하의 N벌이 있다.<br>
+i번째 상의와 i번째 하의는 모두 같은 색상이며, N개의 색상은 모두 서로 다르다.<br>
+상,하의의 서로 다른 색상인 조합의 갯수를 출력하라.
+
+### N의 범위
+**1 ≤ N ≤ 2017**
+
+
+## 🖊️풀이법
+
+1. 상의 {a,b,c,d,e} 와 하의 {a,b,c,d,e}가 있다고 가정해보자.
+2. 만약 상의 a를 고른다면 하의는 같은 색인 a를 제외하고 4가지를 선택할 수 있다.
+3. 만약 상의 b를 고른다면 하의는 같은 색인 b를 제외하고 4가지를 선택할 수 있다.
+4. 이와같은 방법을 반복하면, 하나의 상의에 4가지의 색의 하의를 선택할 수 있다.
+5. 이 방법을 수식으로 나타내면, N*(N-1)이라는 식으로 표현할 수 있다.
+6. 해당 수식을 N에 대입하여 출력한다. 
+
+### 정답 코드
+
+```java
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        System.out.println(N * (N - 1));
+    }
+}
+
+```
+
+---
+
+## 정리
+
+경우의 수에서 가장 간단한 예제라고 볼 수 있다.
+
+
+
+
+
+
+
