@@ -1,0 +1,150 @@
+---
+layout: post
+title:  "[백준] 1010번-다리 놓기-Java"
+date:   2023-06-16 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-16 at 6.46.36 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1010">[백준] 1010번-다리 놓기-Java</a></center>
+---
+
+## ❓문제
+
+재원이는 한 도시의 시장이 되었다. 이 도시에는 도시를 동쪽과 서쪽으로 나누는 큰 일직선 모양의 강이 흐르고 있다. 하지만 재원이는 다리가 없어서 시민들이 강을 건너는데 큰 불편을 겪고 있음을 알고 다리를 짓기로 결심하였다. 강 주변에서 다리를 짓기에 적합한 곳을 사이트라고 한다. 재원이는 강 주변을 면밀히 조사해 본 결과 강의 서쪽에는 N개의 사이트가 있고 동쪽에는 M개의 사이트가 있다는 것을 알았다. (N ≤ M)
+
+재원이는 서쪽의 사이트와 동쪽의 사이트를 다리로 연결하려고 한다. (이때 한 사이트에는 최대 한 개의 다리만 연결될 수 있다.) 재원이는 다리를 최대한 많이 지으려고 하기 때문에 서쪽의 사이트 개수만큼 (N개) 다리를 지으려고 한다. 다리끼리는 서로 겹쳐질 수 없다고 할 때 다리를 지을 수 있는 경우의 수를 구하는 프로그램을 작성하라.
+
+### N,M의 범위
+**0 < N ≤ M < 30**
+
+
+## 🖊️풀이법
+
+이번 문제는 경우의 수 문제이다.<br>
+서쪽에서 동쪽에 다리를 놓을 때, 다리가 서로 교차하지 않는 경우를 제외한 모든 경우의 수를 찾으면 된다.<br>
+언뜻 보면, 교차하는 경우까지 계산하려면 상당히 복잡해 보이지만, (1,2) 와 (2,1)의 경우는 동일한 케이스라고 보면 수학적 개념에서 조합(Combination)이라고 단순히 생각하면 쉽다.<br>
+조합은 n!/r!*(n-r)!로 나타낼 수 있다.<br>
+하지만 N,M의 최대값이 29로 29!를 계산하면 ```8841761993739701954543616000000```와 같이 long의 범위보다 훨씬 넘게되고, 이를 해결하기 위해선 ```BigInteger```를 사용해야 한다.<br>
+따라서, 이번에는 ```파스칼의 증명```과 ```조합성질``` 몇가지를 사용하여, 풀려고 한다.<br>
+
+### 파스칼의 증명
+
+![screenshot](/assets/img/algorithm/1.png)
+
+위의 공식은 파스칼의 삼각형을 기반으로 만들어진 공식이며, 
+
+![screenshot](/assets/img/algorithm/2.png)
+
+공식을 좀 더 간결하게 쓰면 이렇게 작성할 수 있다.
+
+![screenshot](/assets/img/algorithm/3.png)
+
+해당 n과 r의 이항계수를 도출하려면 최종적으로 이렇게 수정하면 된다.
+위의 식을 흔히 ```파스칼의 증명```이라고 한다.
+
+### 조합 성질 
+
+![screenshot](/assets/img/algorithm/4.png)
+
+위의 파스칼의 증명과 함께 위의 조합성질을 이용할 것이다.
+
+![screenshot](/assets/img/algorithm/5.png)
+
+위의 식을 좀더 간결하게 쓰면 위와 같다.
+
+
+### 1차 시도 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
+            sb.append(combi(M,N)).append('\n');
+        }
+        System.out.println(sb);
+    }
+    static int combi(int n , int r){
+        if(n==r || r == 0) {
+            return 1;
+        }
+        return combi(n-1, r-1) + combi(n-1 , r);
+    }
+}
+
+```
+
+하지만 위와 같이 제출하면, 정답은 나오나 시간초과로 인하여 문제를 통과하지 못한다.<br>
+이유는 모든 케이스의 재귀를 반복하기 때문에 불필요한 연산이 이루어져서 시간이 소모되는 것이다.<br>
+이를 해결하기위해 위의 코드에 Dynamic Programming이라고 불리는 **동적계획법**을 적용하여 풀어보자.<br>
+동적계획법은 쉽게말해서, 앞의 연산 기록을 저장하고, 다음에 동일한 연산이 실행되었을 때 기록을 저장한 값을 참조하여 불필요한 연산을 줄여 시간복잡도를 낮추고 효율을 증가 시킬 수 있다.<br>
+
+### 동적 계획표 정답 코드
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    static int[][] dp = new int[30][30]; //N,M의 범위가 29이므로 29+1의 2차원 배열을 생성
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
+            sb.append(combi(M, N)).append('\n');
+        }
+        System.out.println(sb);
+    }
+
+    static int combi(int n, int r) {
+        if(dp[n][r] > 0){ //만약 이미 계산한 결과라면 해당 배열의 값을 반환
+            return dp[n][r];
+        }
+        if(n == r || r ==0){ //조합성질
+            return dp[n][r] = 1;
+        }
+        return dp[n][r] = combi(n-1,r-1) + combi(n-1, r); //파스칼의 증명
+    }
+}
+```
+
+아래의 예시와 함께 찬찬히 살펴보자.<br>
+예를 들어 N=2 , M=5라는 테스트 케이스가 있다고 가정해보자.<br>
+
+![screenshot](/assets/img/algorithm/IMG_0034.png)
+
+위의 그림과 같이 아마 재귀함수가 동작 될 것이다.<br>
+dp라는 배열에 결과값을 저장하게 되면 왼쪽의 3C1 = 3으로 한번 연산하여 값을 dp[3][1]에 결과를 저장했기때문에 4C2에서 호출되는 3C1에서 다시 재귀함수를 호출할 필요없이 dp[3][1]을 참조하여, 값을 불러와 불필요한 재귀호출을 줄일 수 있는 것이다. 
+
+---
+
+### 정리
+
+이처럼 동적계획법을 활용하면, 동일한 연산이 반복될 경우 해당 값을 저장하고 다음 연산때 바로바로 불러와 불필요한 연산을 줄이고 효율을 높일 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
