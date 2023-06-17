@@ -1,0 +1,173 @@
+---
+layout: post
+title:  "SQL 기초(2)"
+date:   2023-06-15 11:00:00 +0900
+categories: database
+tags: database
+---
+
+## SQL 기초(2)
+
+### 사칙연산자
+
+기본적으로 SQL문은 사칙연산자를 사용할 수 있다.
+
+```SQL
+SELECT 1 + 2; -- 출력 3
+SELECT 5 - 2.5; -- 출력 2.5
+SELECT 2 * (3 + 4) / 2; -- 출력 7
+SELECT 10 % 3; -- 출력 7
+```
+
+위와같이 기본적인 계산을 지원한다.<br>
+따라서, 숫자값을 컬럼으로 가지는 컬럼들을 연산할 수 있다.<br>
+예를들어, UserId 와 Grade가 int타입의 컬럼이라면, 아래와 같이 연산 및 활용할 수 있다.
+```SQL
+SELECT UserID + Grade AS TestColumn FROM UserTable;
+```
+물론 위의 값은 유저와 단게를 더한 것으로 예시를 위한 의미 없는 값이다. <br>
+하지만 만약 제품 리스트의 가격이라면?? <br>
+제품을 50% 할인된 가격으로 판매하려고 한다. 따라서 메뉴판을 구성하기 위해서 50%의 할인된 값을 보기위해서는
+```SQL
+SELECT ProductName, Price / 2 AS HalfPrice FROM Products;
+```
+와 같이 제품명과 할인된 가격을 볼 수 있을 것이다.
+
+### TRUE / FALSE
+
+SQL문은 참/거짓 타입의 TRUE와 FALSE를 지원한다.<br>
+* 결과값이 만약 TRUE(참)인 경우 1을 출력
+* 결과값이 만약 FALSE(거짓)인 경우 0을 출력
+<br>
+
+```SQL
+SELECT TRUE; --TRUE라는 컬럼에 1을 출력
+SELECT FALSE; --FALSE라는 컬럼에 2를 출력
+```
+
+아래의 예시를 살펴보자
+```SQL
+SELECT * FROM Students WHERE TRUE; -- 모든 학생들의 컬럼을 출력
+SELECT * FROM Students WHERE FALSE; -- FALSE의 조건이므로 아무것도 출력하지 않음
+```
+
+### IS / IS NOT
+
+IS와 IS NOT은 영어 해석 그대로 이해하면 쉽다.
+
+```SQL
+SELECT 1 IS 1; -- 1은 1이다. 참이기 떄문에 1을 출력
+SELECT 2 IS 1; -- 2는 1이 아니므로 0을 출력
+SELECT 3 - 2 IS 1; -- 3-2 = 1 은 1이므로 1을 출력
+```
+
+이와 같이 두 가지가 일치하는지 비교하는 연산자이다.
+
+### AND(&&) / OR(||)
+
+AND는 둘다 참인 경우 OR은 둘중 하나라도 참인 경우를 출력한다.
+
+```SQL
+SELECT 1 + 2 = 4 AND 1 + 3 = 4 -- 0을 출력
+SELECT 1 + 2 = 4 OR 1 + 3 = 4 -- 1을 출력
+```
+
+만약, Students 테이블에서 2학년 학생들 중 점수가 100점인 학생을 찾는다고 가정해보자.
+```SQL
+SELECT * FROM Students WHERE GRADE = 2 AND SCORE = 100;
+```
+과 같이 2학년이면서 점수가 100점인 학생이 출력될 것이다.<br>
+그렇다면 이번에는 2학년 또는 1학년인 학생들을 찾아보자.
+```SQL
+SELECT * FROM Students WHERE GRADE = 2 OR GRADE = 1;
+```
+과 같이 찾을 수 있을 것이다.
+
+### 비교연산자(=,!,>,<)
+
+* = : 양쪽 값이 같을 때
+* !=, <> 양쪽 값이 다를 떄
+* \>,< 왼쪽 혹은 오른쪽 값이 클때
+* \>=, <= 왼쪽 혹은 오른쪽 같이 같거나 클 때
+
+```SQL
+SELECT 'A' = 'A'; -- 출력 1
+SELECT 2 > 1; --출력 1
+SELECT 2 >= 1; --출력 1
+SELECT 2 != 1; --출력 1
+```
+과 같이 비교연산자를 이용할 수 있다.<br>
+
+예를들어 Students 테이블에 2학년들 중 80점 이상을 받은 학생들을 보고 싶다면
+```SQL
+SELECT * FROM Students WHERE GRADE = 2 AND SCORE >= 80;
+```
+와 같이 비교연산자를 이용하여 찾을 수 있다.<br>
+<br>
+❗️문자열 비교의 경우 abc오름차순 순으로 비교한다.<br>
+예를들어 'abc' > 'bcd'의 경우 b가 더 뒤에 있으므로 0이 출력된다.
+
+### BETWEEN / NOT BETWEEN
+
+* BETWEEN {MIN} AND {MAX} : MIN ~ MAX값 사이의 값
+* NOT BETWEEN {MIN} AND {MAX} : MIN ~ MAX값 사이에 없는 값
+
+```SQL
+SELECT 3 BETWEEN 1 AND 10; --3은  1~10 사이에 있으므로 1을 출력
+SELECT 'boat' NOT BETWEEN 'Apple' AND 'Dog'; --a~d 사이 b가 있기때문에 1을 출력
+```
+
+Students 테이블에서 60 ~ 80점 사이의 점수를 받은 학생을 출력하려면
+```SQL 
+SELECT * FROM Students WHERE SCORE BETWEEN 60 AND 80;
+```
+과 같이 나타낼 수 있다.
+
+### IN / NOT IN
+* IN : 배열에 포함된 값
+* NOT IN : 배열에 포함되지 않은 값
+
+```SQL
+SELECT 1 + 1 IN (1, 2, 3, 4); --2가 배열에 있으므로 1을 출력
+```
+
+Students 테이블에서 학생들의 집 주소가 부산과 서울인 학생의 정보를 찾으려면
+```SQL
+SELECT * FROM Students WHERE City IN ('Busan','Seoul');
+```
+과 같이 나타낼 수 있다.
+
+### LIKE '%' / LIKE '_'
+
+LIKE를 사용하면 지정한 문자가 가지고있는 패턴을 검색할 수 있다.
+
+```SQL
+SELECT 'APPLE' LIKE 'A%' -- 맨앞이 A로 시작하는 모든 단어
+SELECT 'APPLE' LIKE 'AP%' -- AP로 시작하는 모든단어
+SELECT 'APPLE' LIKE '%AP%' -- AP라는 문자열패턴을 가진 모든 단어
+SELECT 'APPLE' LIKE 'AP___' -- AP로 시작하는 문자열 길이가 5인 단어
+SELECT 'APPLE' LIKE '_PP__' -- 두번째와 세번째 문자가 P인 길이가 5인 단어
+```
+
+Students 테이블에서 학생이름 cho가 들어가는 모든 학생을 검색한다고 가정해보자.
+```SQL
+SELECT * FROM Students WHERE StudentName LIKE '%cho%'; --cho라는 문자열이 있으면 모두 출력
+SELECT * FROM Students WHERE StudentName LIKE 'cho%'; --cho로 시작하는 학생만 출력
+SELECT * FROM Students WHERE StudentName LIKE 'cho_'; --이름의 길이가 4인 학생중 cho로 시작하는 학생만 출력
+--ex : choi, choa 등
+```
+
+**% 와 _의 차이점**<br>
+* % : 문자열 크기의 제한이 없다.
+* _ : 문자열의 크기에 제한이 존재한다.
+
+
+
+---
+
+### 끝으로
+
+SQL 연산자를 통해서 원하는 정보를 보다 손쉽게 필터링하여 가져올 수 있다.<br>
+SQL의 경우에는 암기보다는 실제로 많이 타이핑하고 테스트 해보는 것이 실력향상에 도움이 되므로, 많이 실습을 해보자
+
+
