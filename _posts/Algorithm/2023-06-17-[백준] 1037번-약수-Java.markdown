@@ -1,0 +1,76 @@
+---
+layout: post
+title:  "[백준] 1037번-약수-Java"
+date:   2023-06-17 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-17 at 5.55.22 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1037">[백준] 1037번-약수-Java</a></center>
+---
+
+## ❓문제
+
+첫째 줄에 1과 N을 제외한 N의 **진짜 약수**의 개수가 주어진다.<br>
+둘째 줄에는 **진짜 약수**들이 주어지며, 입력받은 약수를 가지는 N을 구하라.
+
+### N 범위
+**2 ≤ N ≤ 1,000,000**
+
+
+## 🖊️풀이법
+
+**진짜 약수**라는 단어에 유의해야한다.<br>
+문제에서 말하는 **진짜 약수**란, 정수 N이 가지는 모든 약수를 말한다.<br>
+예를들어, 5 25 를 입력받았다면, N은 50이 아니라, 125이다.<br> 
+이유는 입력받은 약수를 가지는 최소공배수가 아니기 때문이다.
+* N = 50 일 경우 {1, 2, 5, 10, 25, 50}
+* N = 125 일 경우 {1, 5, 25, 125}
+<br>
+
+따라서, 해당문제는 입력받은 가장 작은 약수와 가장 큰 약수의 곱을 출력하면 정답이다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        int[] arr = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i<N; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(arr);
+        System.out.println(arr[0]*arr[arr.length-1]);
+    }
+}
+
+```
+
+---
+
+### 정리
+
+이번 문제는 문제를 푸는 것보다 이해하는 것이 중요한 문제였다.<br>
+알고리즘 관련 책에서 이런 글귀를 읽은 적이 있다.<br>
+문제를 잘 풀려면, 그 문제에서 말하는 내용을 먼저 잘 이해해야한다고.. 이점을 항상 마음깊이 새기자.
+
+
+
+
+
+
+
+
+
+
+
+
