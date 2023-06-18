@@ -1,0 +1,90 @@
+---
+layout: post
+title:  "[백준] 25192-인사성 밝은 곰곰이-Java"
+date:   2023-06-17 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-18 at 12.16.26 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/25192">[백준] 25192-인사성 밝은 곰곰이 Java</a></center>
+---
+
+## ❓문제
+
+알고리즘 입문방 오픈 채팅방에서는 새로운 분들이 입장을 할 때마다 곰곰티콘을 사용해 인사를 한다. 이를 본 문자열 킬러 임스는 채팅방의 기록을 수집해 그 중 곰곰티콘이 사용된 횟수를 구해 보기로 했다.<br>
+<br>
+ENTER는 새로운 사람이 채팅방에 입장했음을 나타낸다. 그 외는 채팅을 입력한 유저의 닉네임을 나타낸다. 닉네임은 숫자 또는 영문 대소문자로 구성되어 있다.<br>
+<br>
+새로운 사람이 입장한 이후 처음 채팅을 입력하는 사람은 반드시 곰곰티콘으로 인사를 한다. 그 외의 기록은 곰곰티콘을 쓰지 않은 평범한 채팅 기록이다.<br>
+
+채팅 기록 중 곰곰티콘이 사용된 횟수를 구해보자!<br>
+
+### 입력
+
+* 첫 번째 줄에는 채팅방의 기록 수를 나타내는 정수 **N** 이 주어진다. (1 ≤ N ≤ 100,000)
+
+* 두 번째 줄부터 **N** 개의 줄에 걸쳐 새로운 사람의 입장을 나타내는 **ENTER**, 혹은 **채팅을 입력한 유저의 닉네임**이 문자열로 주어진다.<br> 
+(1 ≤ 문자열길이 ≤ 20)
+
+* 첫 번째 주어지는 문자열은 무조건 **ENTER**이다.
+
+## 🖊️풀이법
+
+이번 문제를 처음 딱 보자마자 중복을 제거해야하는 문제라고 느껴져 바로 **Set**을 사용해야겠다고 생각했다.<br>
+로직은 매우 간단하다.
+1. Set 타입을 선언
+2. 만약 문자열이 ENTER가 아니면, set에 문자열을 저장
+3. 만약 ENTER인 경우, set을 비우고, count값에 set.size를 더하여 저장
+4. 만약 i가 마지막 반복문을 순회할 경우 count값에 set.size값을 더하여 저장
+
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        int count = 0;
+        Set<String> set = new HashSet<String>();
+        for(int i = 0; i < N; i++){
+            String s = br.readLine();
+            if(!s.equals("ENTER")){
+                set.add(s);
+            }
+            if (s.equals("ENTER") || i == N-1) {
+                count += set.size();
+                set.clear();
+            }
+        }
+        System.out.println(count);
+    }
+}
+
+```
+
+---
+
+## 정리
+
+기본적인 문제이지만, 계속해서 알고리즘 학습을 해나가니 어떤 문제를 어떻게 접근해야하는지 조금씩 보이는 것 같다.<br>
+이렇게 학습해나가면 보다 복잡한 문제도 어떻게 풀어야하는지 보일 날이 오리라 믿는다 :) 
+
+
+
+
+
+
+
+
+
+
+
+
