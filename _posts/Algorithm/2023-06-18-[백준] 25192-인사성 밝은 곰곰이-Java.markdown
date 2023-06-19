@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[백준] 25192-인사성 밝은 곰곰이-Java"
-date:   2023-06-17 11:00:19 +0900
+date:   2023-06-18 11:00:19 +0900
 categories: algorithm
 tags: algorithm
 ---
