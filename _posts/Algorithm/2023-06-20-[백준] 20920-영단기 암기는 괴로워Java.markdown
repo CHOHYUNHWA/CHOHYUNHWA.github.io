@@ -1,0 +1,90 @@
+---
+layout: post
+title:  "[백준] 20920-영단기 암기는 괴로워Java"
+date:   2023-06-19 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-20 at 2.54.42 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/20920">[백준] 20920-영단기 암기는 괴로워Java</a></center>
+---
+
+## ❓문제
+
+1. 정수 N 과 M, N개의 문자열을 입력받는다.
+2. 다음과 순서의 조건으로 정렬하여 문자열을 중복없이 출력하라
+  1. 자주 나오는 단어일수록 앞에 배치한다.
+  2. 해당 단어의 길이가 길수록 앞에 배치한다.
+  3. 알파벳 사전 순으로 앞에 있는 단어일수록 앞에배치한다.
+
+## 🖊️풀이법
+
+1. Map을 이용하여, Key로 문자열을 , Value로 문자열이 몇번 입력되는지 저장한다.
+2. List에 저장한 Map객체를 Map.Entry타입으로 변환 한다.
+3. List.sort메서드의 파라미터로 받는 Comparator 인터페이스를 구현한다.
+4. 정렬된 List\<Map.Entry>값을 출력한다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for (int i = 0; i < N; i++) {
+            st= new StringTokenizer(br.readLine());
+            String key = st.nextToken();
+            if (map.containsKey(key)) { // 키가 이미 있는경우 
+                map.put(key, map.get(key) + 1); // 해당하는 Key의 Value값에 +1
+            } else if (key.length() >= M) { // 키가 없고 키의 문자열길이가 M 이상인 경우만
+                map.put(key, 1); //map에 저장
+            }
+        }
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet()); 
+        list.sort((o1,o2) -> {
+            Integer o1Length = o1.getKey().length(); //key의 길이
+            Integer o2Length = o2.getKey().length();
+            if(o1.getValue().equals(o2.getValue())) { 
+                if(o1Length.equals(o2Length)) { 
+                    return o1.getKey().compareTo(o2.getKey()); //빈도수,길이가 같은경우 사전순으로 정렬
+                }
+                return o2Length.compareTo(o1Length); //빈도수는 같고, 길이는 다른 경우 길이순으로 정렬
+            }
+                return o2.getValue().compareTo(o1.getValue()); //빈도수가 다른 경우 빈도순으로 정렬
+        });
+        for (Map.Entry<String, Integer> key : list) { //정렬된 list를 순서대로 출력
+            sb.append(key.getKey()).append('\n');
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제를 풀때, compareTo의 정렬기준이 조금 헷갈릴 수 있다.<br>
+예를들어, 빈도수의 경우 내림차순 정렬이 될 것이고 사전순의 경우 오름차순 정렬이 될 것이다.<br>
+이처럼, 해당 문제의 요구사항을 잘 파악하고 구현하자.
+
+
+
+
+
+
+
+
+
+
+
+
