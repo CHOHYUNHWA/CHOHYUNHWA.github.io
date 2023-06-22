@@ -1,0 +1,94 @@
+---
+layout: post
+title:  "[백준] 9012-괄호-Java"
+date:   2023-06-19 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-22 at 1.46.25 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/9012">[백준] 9012-괄호-Java</a></center>
+---
+
+## ❓문제
+
+괄호 문자열(Parenthesis String, PS)은 두 개의 괄호 기호인 ‘(’ 와 ‘)’ 만으로 구성되어 있는 문자열이다. 그 중에서 괄호의 모양이 바르게 구성된 문자열을 올바른 괄호 문자열(Valid PS, VPS)이라고 부른다. 한 쌍의 괄호 기호로 된 “( )” 문자열은 기본 VPS 이라고 부른다. 만일 x 가 VPS 라면 이것을 하나의 괄호에 넣은 새로운 문자열 “(x)”도 VPS 가 된다. 그리고 두 VPS x 와 y를 접합(concatenation)시킨 새로운 문자열 xy도 VPS 가 된다. 예를 들어 “(())()”와 “((()))” 는 VPS 이지만 “(()(”, “(())()))” , 그리고 “(()” 는 모두 VPS 가 아닌 문자열이다. <br>
+
+<br>
+
+여러분은 입력으로 주어진 괄호 문자열이 VPS 인지 아닌지를 판단해서 그 결과를 YES 와 NO 로 나타내어야 한다. 
+
+* ```(())())```의 경우 ```)```가 남기 때문에 올바른 VPS가 아니다.
+* ```(()((())()(```의 경우 ```(```가 남기 때문에 올바른 VPS가 아니다.
+* ```(()())((()))```의 경우 모든 괄호의 쌍과 순서가 맞기 때문에 올바른 VPS이다.
+
+
+## 🖊️풀이법
+
+이번 문제는 스택과 간단한 예외처리를 해주면 풀 수 있는 문제이다.<br>
+1. ```(```가 입력되었을 때, ```Stack.push```한다.
+2. ```)```가 입력되었을 때, ```Stack.pop```한다.
+3. 만약 모든 문자열을 push와 pop을 반복하였을 때 스택이 비어있다면, ```YES```를 출력 비어있지 않다면 ```NO```를 출력한다.
+4. 만약 스택이 비어있는 상황에서 ```)```가 입력된다면, 잘못된 PS이므로, ```NO```를 출력한다.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        for(int i = 0; i< N; i++){
+            String str = br.readLine();
+            sb.append(vps(str)).append('\n');
+        }
+        System.out.println(sb);
+    }
+
+    static String vps(String str){
+        Stack<Character> stack = new Stack<Character>();
+        for(int i = 0; i< str.length(); i++){
+            char c = str.charAt(i);
+            if(c == '('){
+                stack.push(c);
+            } else if( c == ')'){
+                try {
+                    stack.pop();
+                } catch (Exception e){
+                    return "NO";
+                }
+            }
+        }
+        if(stack.empty()){
+            return "YES";
+        } else {
+            return "NO";
+        }
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제는 꼭 스택뿐만 아니라, 다양하게 풀어낼 수 있다.<br>
+괄호에 따른 ```count```값을 두어, 해당 값이 0인지 아닌지를 판별하는 방법도 있다.<br>
+하지만 이번에 ```try/catch```문과 함께 접목시킴으로써 전에 했던 학습을 복습해보는 시간이 되었다.
+
+
+
+
+
+
+
+
+
+
+
+
