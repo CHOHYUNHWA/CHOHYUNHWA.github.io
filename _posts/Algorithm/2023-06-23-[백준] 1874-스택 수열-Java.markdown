@@ -1,0 +1,113 @@
+---
+layout: post
+title:  "[백준] 1874-스택 수열-Java"
+date:   2023-06-19 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-23 at 7.09.31 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1874">[백준] 1874-스택 수열-Java</a></center>
+---
+
+## ❓문제
+
+스택 (stack)은 기본적인 자료구조 중 하나로, 컴퓨터 프로그램을 작성할 때 자주 이용되는 개념이다. 스택은 자료를 넣는 (push) 입구와 자료를 뽑는 (pop) 입구가 같아 제일 나중에 들어간 자료가 제일 먼저 나오는 (LIFO, Last in First out) 특성을 가지고 있다.<br>
+
+1부터 n까지의 수를 스택에 넣었다가 뽑아 늘어놓음으로써, 하나의 수열을 만들 수 있다. 이때, 스택에 push하는 순서는 반드시 오름차순을 지키도록 한다고 하자. 임의의 수열이 주어졌을 때 스택을 이용해 그 수열을 만들 수 있는지 없는지, 있다면 어떤 순서로 push와 pop 연산을 수행해야 하는지를 알아낼 수 있다. 이를 계산하는 프로그램을 작성하라.
+
+<br>
+
+첫 줄에 n (1 ≤ n ≤ 100,000)이 주어진다. 둘째 줄부터 n개의 줄에는 수열을 이루는 1이상 n이하의 정수가 하나씩 순서대로 주어진다. 물론 같은 정수가 두 번 나오는 일은 없다.
+
+<br>
+
+입력된 수열을 만들기 위해 필요한 연산을 한 줄에 한 개씩 출력한다. push연산은 +로, pop 연산은 -로 표현하도록 한다. 불가능한 경우 NO를 출력한다.
+
+* ```8 4 3 6 8 7 5 2 1```의 경우 ```+ + + + - - + + - + + - - - - -``` 출력한다.
+* ```5 1 2 5 3 4```의 경우 수열을 만들 수 없으므로 ```NO``` 를 출력한다.
+
+
+## 🖊️풀이법
+
+우선, 문제가 조금 난해하다.<br>
+아래 내용을 한번 살펴보자<br>
+입력이 ```8 4 3 6 8 7 5 2 1```일 경우
+
+|idx|배열|출력|
+|:-----:|:--------|:--------:|
+|1|{1}|+|
+|2|{1,2}|+|
+|3|{1,2,3}|+|
+|4|{1,2,3,4}|+|
+|5|{1,2,3}|-|
+|6|{1,2}|-|
+|7|{1,2,5}|+|
+|8|{1,2,5,6}|+|
+|9|{1,2,5}|-|
+|10|{1,2,5,7}|+|
+|11|{1,2,5,7,8}|+|
+|12|{1,2,5,7}|-|
+|13|{1,2,5}|-|
+|14|{1,2}|-|
+|15|{1}|-|
+|16|{}|-|
+
+<br>
+과 같은 방식으로 출력값이 결정된다. :) <br>
+문제만 잘 이해한다면, 해당 문제는 ```Stack```을 이용하면, 손쉽게 풀 수 있다는 것을 알 수 있다.
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine()); //입력받은 정수 N을 할당
+        Stack<Integer> stack = new Stack<Integer>(); //스택을 생성
+        int count = 1; //스택에 들어갈 초기값 설정
+        while(N-- > 0){ // N번만큼 반복
+            int element = Integer.parseInt(br.readLine()); //element에 요소 할당
+            while(true) {
+                if (!stack.empty() && element == stack.peek()) { //스택이 비어있지 않고, 스택의 마지막요소가 element와 같으면
+                    stack.pop(); //마지막요소 제거
+                    sb.append("-").append('\n'); //sb "-" 추가
+                    break; //반복문 종료
+                } else if(stack.empty() || stack.peek() < element) { //만약 스택이 비어있거나, 스택의 마지막요소가 element 보다 작으면
+                    stack.push(count++); //stack에 count값 push 후 count값 +1
+                    sb.append("+").append('\n'); //sb "+" 추가
+                } else if(stack.peek() > element) { //만약 스택의 마지막요소가 element보다 크다면, 배열을 만들 수 없으므로
+                    System.out.println("NO"); //NO를 출력
+                    return; // 메서드 종료
+                }
+            }
+        }
+        System.out.println(sb); //sb를 출력
+    }
+}
+```
+
+---
+
+## 정리
+
+이번 문제는 문제 자체의 이해가 어려운 문제라고 볼 수 있다. :)<br>
+꼼꼼하게 문제를 읽고, 잘 이해하자!!!
+
+
+
+
+
+
+
+
+
+
+
+
