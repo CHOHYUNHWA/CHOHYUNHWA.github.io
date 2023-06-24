@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[백준] 20920-영단기 암기는 괴로워-Java"
-date:   2023-06-19 11:00:19 +0900
+date:   2023-06-20 11:00:19 +0900
 categories: algorithm
 tags: algorithm
 ---

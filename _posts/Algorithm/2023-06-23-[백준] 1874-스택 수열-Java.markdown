@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[백준] 1874-스택 수열-Java"
-date:   2023-06-19 11:00:19 +0900
+date:   2023-06-23 11:00:19 +0900
 categories: algorithm
 tags: algorithm
 ---

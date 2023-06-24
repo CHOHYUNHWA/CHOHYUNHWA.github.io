@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[백준] 10828-스택-Java"
-date:   2023-06-19 11:00:19 +0900
+date:   2023-06-21 11:00:19 +0900
 categories: algorithm
 tags: algorithm
 ---
