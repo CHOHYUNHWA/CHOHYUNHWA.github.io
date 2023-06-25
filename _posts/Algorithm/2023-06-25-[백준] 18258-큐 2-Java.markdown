@@ -1,0 +1,152 @@
+---
+layout: post
+title:  "[백준] 18258-큐 2-Java"
+date:   2023-06-25 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-25 at 12.33.07 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/18258">[백준] 18258-큐 2-Java</a></center>
+---
+
+## ❓문제
+
+정수를 저장하는 큐를 구현한 다음, 입력으로 주어지는 명령을 처리하는 프로그램을 작성하시오.<br>
+
+명령은 총 여섯 가지이다.<br>
+
+* push X: 정수 X를 큐에 넣는 연산이다.
+* pop: 큐에서 가장 앞에 있는 정수를 빼고, 그 수를 출력한다. 만약 큐에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+* size: 큐에 들어있는 정수의 개수를 출력한다.
+* empty: 큐가 비어있으면 1, 아니면 0을 출력한다.
+* front: 큐의 가장 앞에 있는 정수를 출력한다. 만약 큐에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+* back: 큐의 가장 뒤에 있는 정수를 출력한다. 만약 큐에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+
+N의 범위
+* 1 ≤ N ≤ 2,000,000
+주어지는 정수의 범위
+* 1 ≤ N ≤ 100,000
+
+
+## 🖊️풀이법
+
+이번 문제는 큐의 개념에 대하여 알고 있다면, 손쉽게 풀 수 있다<br>
+큐는 스택과 다르게 FIFO의 개념을 가지고 있다.<br>
+"First In, First Out" 먼저 들어온 요소가 먼저 빠져나간다.<br>
+쉽게 말해서 고속도로 톨게이트를 생각해보자.<br>
+고속도로에서는 먼저 톨게이트에 줄을 선 사람이 먼저 계산을 하고 나가게 된다.<br>
+그래서, 위의 내용을 읽고 주어진 제한사항에 맞게 아래의 코드처럼 구현하면 된다.<br>
+
+<br>
+주의 할 점은 시간 복잡도가 연산 당 시간 복잡도가 O(1)이 나와야한다.<br>
+이 말인 즉슨, ArrayList는 사용할 수 없다는 것이다.<br>
+ArrayList는 index를 가지고 있고 만약 맨 뒷값이 아닌 데이터가 삭제될 때는 해당 데이터를 삭제한 뒤, index값을 맞추기 위하여 나머지 데이터들을 다시 복사 하여 앞으로 이동시키는 방식이다.<br>
+하지만 LinkedList의 경우 각각의 데이터들은 각 요소의 앞(head),뒤(tail)에 대한 정보를 가지고 있다.<br>
+따라서 만약 데이터가 삽입,삭제 될 경우에는 요소의 앞,뒤 값만 변경하여 요소들을 연결 시켜주면 된다.
+큐의 경우 pop시, 데이터가 앞에서 삭제되므로 ArrayList는 비효율 적이다.<br>
+그리고 java에서 실제 Queue 또한, LinkedList를 상속받아서 구현되어있다.
+
+<br>
+이번 문제는 컬렉션의 Queue를 사용하기에는 제한적이다.<br>
+이유는 "back"이라는 조건이 실제 Queue의 메서드에는 없기 때문이다.<br>
+따라서, 맨 뒤의 요소를 찾을 수 있는 메서드가 없기때문에 LinkedList를 사용하였다.
+
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        LinkedList<String> queue = new LinkedList<>();
+        for(int i = 0; i < N; i++){
+            String str = br.readLine();
+            if(str.startsWith("push")){
+                push(queue,str);
+            } else if(str.startsWith("pop")){
+                sb.append(pop(queue)).append('\n');
+            } else if(str.startsWith("size")){
+                sb.append(size(queue)).append('\n');
+            } else if(str.startsWith("empty")){
+                sb.append(empty(queue)).append('\n');
+            } else if(str.startsWith("front")){
+                sb.append(front(queue)).append('\n');
+            } else if(str.startsWith("back")){
+                sb.append(back(queue)).append('\n');
+            }
+        }
+        System.out.println(sb);
+    }
+    static void push(LinkedList<String> queue,String str){
+        queue.offer(str.substring(5));
+    }
+
+    static String pop(LinkedList<String> queue) {
+        if (queue.size() == 0) {
+            return "-1";
+        } else {
+            return queue.pop();
+        }
+    }
+    static String size(LinkedList<String> queue) {
+        return String.valueOf(queue.size());
+    }
+
+    static String empty(LinkedList<String> queue) {
+        if(queue.size() == 0) {
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+
+    static String front(LinkedList<String> queue) {
+        if(queue.size() == 0) {
+            return "-1";
+        } else{
+            return queue.get(0);
+        }
+    }
+    static String back(LinkedList<String> queue) {
+        if(queue.size() == 0) {
+            return "-1";
+        } else{
+            return queue.get(queue.size()-1);
+        }
+    }
+}
+```
+
+---
+
+## 정리
+
+자료구조의 특성을 잘 파악하고, 적절하게 잘 사용하자.
+
+* Stack은 ArrayList 형태에 적합 (실제로는 Vector를 상속 받음)
+  * 둘의 차이는 동기화를 지원하느냐 하지 않느냐의 차이
+* Queue는 LinkedList를 상속받음
+
+* ArrayList는 index순으로 데이터가 정렬되어있기 때문에 조회할때 유리함
+* LinkedList는 요소들의 앞,뒤 정보를 가지고 있어서 데이터의 삽입, 조회에 유리함
+
+
+
+
+
+
+
+
+
+
+
+
+
