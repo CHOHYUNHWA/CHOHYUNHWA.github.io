@@ -1,0 +1,72 @@
+---
+layout: post
+title:  "[백준] 2164-카드 2-Java"
+date:   2023-06-25 11:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-26 at 2.32.18 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/2164">[백준] 2164-카드 2-Java</a></center>
+---
+
+## ❓문제
+
+이번 문제는 정말정말 간단하다.
+
+1. 1~N까지의 N장의 카드가 있다.
+2. 카드는 위에서 1 부터 아래 N까지 순서로 놓여있다.
+3. 제일 위의 카드 한장을 버리고, 다음 카드를 가장 아래로 놓는다.
+4. 계속해서 해당 행위를 반복하였을때, 마지막에 남는 카드를 구하라.
+
+
+## 🖊️풀이법
+
+이번 문제 또한 큐의 자료구조를 사용하면, 너무 쉽기 때문에 주석으로 대체한다.
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        Queue<Integer> queue = new LinkedList(); //큐를 선언
+        for(int i =1; i<= N; i++){ // 큐에 1~N을 담는다.
+            queue.offer(i);
+        }
+        while(queue.size() > 1){ //큐의 사이즈가 1보다 클때까지 반복한다.
+            queue.poll(); //큐에서 맨위의 값을 버린다.
+            int tmp = queue.poll(); // 그다음 값을 변수 tmp에 담고 값을 버린다.
+            queue.offer(tmp); // tmp값을 다시 큐에 넣는다.
+        }
+        System.out.println(queue.peek()); //반복문이 종료되었을 때, 큐의 peek를 조회한다.
+    }
+}
+```
+---
+
+## 정리
+
+간단하게 해결할 수 있는 쉬운 문제였다.😊
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
