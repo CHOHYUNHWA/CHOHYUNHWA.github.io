@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[백준] 2164-카드 2-Java"
-date:   2023-06-25 11:00:19 +0900
+date:   2023-06-26 11:00:19 +0900
 categories: algorithm
 tags: algorithm
 ---
