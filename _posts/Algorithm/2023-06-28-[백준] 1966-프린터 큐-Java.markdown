@@ -1,0 +1,125 @@
+---
+layout: post
+title:  "[백준] 1966-프린터 큐-Java"
+date:   2023-06-28 10:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-28 at 1.57.39 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/1966">[백준] 1966-프린터 큐-Java</a></center>
+---
+
+## ❓문제
+
+1. 첫째줄에 Test 케이스의 숫자가 주어진다.
+2. 둘째줄에 N M 형식으로 N은 문서의 갯수, M은 문서가 놓여진 위치가 주어진다.
+3. N개만큼의 문서가 중요도를 타나내는 정수가 차례대로 나타난다.
+4. 입력받은 숫자를 바탕으로 M이 나타내는 문서가 몇번째로 인쇄되는지 출력하라
+
+입력
+```
+3
+1 0
+5
+4 2
+1 2 3 4
+6 0
+1 1 9 1 1 1
+```
+
+출력
+```
+1
+2
+5
+```
+
+
+## 🖊️풀이법
+
+이번 문제는 간단하게 느껴지면서도, 3중 반복문이 사용되어서 헷갈리는 부분이 많았다.<br>
+하지만, 하나하나 차근차근 주어진 사항을 설정하여 풀면 풀 수 있다.
+다음 코드의 주석으로 풀이법을 설명하여 확인해보자.
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine()); //테스트 수를 입력받는다.
+
+        while (T-- > 0) { //T만큼 반복
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken()); //입력받을 문서의 총 개수 
+            int M = Integer.parseInt(st.nextToken()); //입력받을 문서 중 몇번째로 출력될지 확인할 문서의 인덱스
+            LinkedList<int[]> q = new LinkedList<>(); //문서를 담을 LinkedList 선언
+
+            st = new StringTokenizer(br.readLine()); //문서리스트가 담긴 StringTokenizer 를 생성
+            for (int i = 0; i < N; i++) { 
+                q.offer(new int[]{i, Integer.parseInt(st.nextToken())}); //q에 입력받은 정수를 하나씩 담는다.
+            }
+
+            int count = 0; //몇번째로 입력되는지 정답을 받을 count 초기화
+
+            while (!q.isEmpty()) { //q가 빌때까지 반복
+                int[] front = q.poll(); //프린터 큐의 가장앞에 있는 문서를 front에 할당 후 q에서 꺼낸다.
+                boolean isMax = true; //front가 가장 큰 수 인지 아닌지 확인하는 flag
+
+                for (int i = 0; i < q.size(); i++) { //q사이즈 만큼 반복문 반복
+                    if (front[1] < q.get(i)[1]) { //만약 front가 q의 i번째 중요도 보다 작으면
+                        q.offer(front); //프린터 q에 offer
+                        for (int j = 0; j < i; j++) { //i이전의 원소들을 뒤로 보낸다.
+                            q.offer(q.poll());
+                        }
+
+                        isMax = false; //front가 Max가 아니므로, isMax를 false로 변경 후 break
+                        break;
+                    }
+                }
+                if(!isMax){ //만약 isMax가 false이면, 아래의 코드를 실행하지 않고 다음 반복문으로 넘김
+                    continue;
+                }
+                count++; //front가 가장큰 원소일 경우 count++하고 
+                if(front[0] == M){ //front의 문서 idx가 M과 같은 경우 sb에 count를 담고 종료
+                    sb.append(count).append('\n');
+                    break;
+                }
+            }
+        }
+        System.out.println(sb);
+    }
+}
+```
+---
+
+
+## 정리
+
+이번 문제는 이차원 배열과 LinkedList를 이용하여, 풀 수 있는 문제였다.<br>
+큐의 성질을 이용하는 문제였지만, 큐의 경우 중간검색 ```get()```메서드가 없기때문에 큐의 구현체인 LinkedList를 이용하여 풀었다.<br>
+역시 다중 반복문은 헷갈린다.. 😭
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
