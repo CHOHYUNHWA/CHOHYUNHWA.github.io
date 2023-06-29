@@ -1,0 +1,157 @@
+---
+layout: post
+title:  "[백준] 10866-덱-Java"
+date:   2023-06-29 10:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-06-29 at 2.28.28 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/10866">[백준] 10866-덱-Java</a></center>
+---
+
+## ❓문제
+
+주어진 명령의 수 N과 N개 만큼의 명령을 입력받아 명령의 조건대로 출력하면 된다.
+* 1 ≤ N ≤ 10,000
+* 1 ≤ 명령문의 정수 ≤ 100,000
+
+### 명령
+명령은 총 여덟 가지이다.<br>
+
+* push_front X: 정수 X를 덱의 앞에 넣는다.
+* push_back X: 정수 X를 덱의 뒤에 넣는다.
+* pop_front: 덱의 가장 앞에 있는 수를 빼고, 그 수를 출력한다. 만약, 덱에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+* pop_back: 덱의 가장 뒤에 있는 수를 빼고, 그 수를 출력한다. 만약, 덱에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+* size: 덱에 들어있는 정수의 개수를 출력한다.
+* empty: 덱이 비어있으면 1을, 아니면 0을 출력한다.
+* front: 덱의 가장 앞에 있는 정수를 출력한다. 만약 덱에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+* back: 덱의 가장 뒤에 있는 정수를 출력한다. 만약 덱에 들어있는 정수가 없는 경우에는 -1을 출력한다.
+
+
+
+## 🖊️풀이법
+
+이번 문제는 그냥 간단한 덱의 구조를 구현하는 문제이다.<br>
+세부 풀이는 주석으로 대체한다.
+
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        LinkedList<Integer> deque = new LinkedList<>(); //LinkedList타입의 deque를 선언
+
+        while(N-- > 0){
+            solve(deque,sb,br); //N만큼 solve 메서드를 실행한다.
+        }
+        System.out.println(sb);
+    }
+
+    static void solve(LinkedList<Integer> deque, StringBuilder sb,BufferedReader br) throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine()); //명령문을 입력받는다.
+        String str = st.nextToken(); //문자열 str에 명령문을 담는다.
+        if(str.substring(0,4).equals("push")){ //만약 push인 경우
+            if(str.contains("front")){ //front인 경우
+                deque.add(0 ,Integer.parseInt(st.nextToken())); //deque의 앞에 정수를 추가
+                return;
+            } else { //back인 경우
+                deque.add(Integer.parseInt(st.nextToken()));  //deque의 뒤에 정수를 추가
+                return;
+            }
+        }
+        if(str.substring(0,3).equals("pop")){ //pop인 경우
+            if(str.contains("front")){ //front의 경우
+                if(deque.size() == 0){ //deque가 비어있는지 체크
+                    sb.append(-1).append('\n'); //비어있는 경우  -1을 출력
+                    return;
+                } else {
+                    sb.append(deque.remove(0)).append('\n'); //비어있지 않은 경우 front값을 삭제 후 출력
+                    return;
+                }
+            }
+            if(str.contains("back")){ //back의 경우
+                if(deque.size() == 0){ //deque가 비어있는지 체크
+                    sb.append(-1).append('\n'); //비어있는 경우  -1을 출력
+                    return;
+                } else {
+                    sb.append(deque.remove(deque.size()-1)).append('\n'); //비어있지 않은 경우 back값을 삭제 후 출력
+                    return;
+                }
+            }
+        }
+        if(str.equals("size")){ //명령문이 size인 경우
+            sb.append(deque.size()).append('\n'); //deque의 사이즈를 출력
+            return;
+        }
+        if(str.equals("empty")){ //명령문이 empty인 경우
+            if(deque.size()==0){ //deque가 비어있는지 체크
+                sb.append(1).append('\n'); //비어있다면 1을 출력
+                return;
+            } else{ //아니면
+                sb.append(0).append('\n'); //0을 출력
+                return;
+            }
+        }
+        if(str.equals("front")) { //명령문이 front인 경우
+            if (deque.size() == 0) { //deque가 비어있는지 체크
+                sb.append(-1).append('\n'); //비어있다면 -1를 출력
+                return;
+            } else { //비어있지 않다면
+                sb.append(deque.get(0)).append('\n'); //deque의 front값을 출력
+                return;
+            }
+        }
+        if(str.equals("back")) {
+            if (deque.size() == 0) { //deque가 비어있는지 체크
+                sb.append(-1).append('\n'); //비어있는 경우  -1을 출력
+                return;
+            } else { //비어있지 않다면
+                sb.append(deque.get(deque.size()-1)).append('\n'); //deque의 back값을 출력
+                return;
+            }
+        }
+    }
+}
+```
+---
+
+
+## 정리
+
+### 덱(deque)의 성질
+덱은 흔히 말하는 카드 덱을 생각하면 이해하기 쉽다.<br>
+자료구조적으로 Stack과 Queue를 합친 자료구조라고 생각할 수 있다.<br>
+덱은 데이터를 앞,뒤 모두 넣을 수 있고 뺄 수도 있다.<br>
+자바에서 덱은 인터페이스로 구현되어 있으며, 이를 구현한 클래스로는 ```ArrayDeque```, ```LinkedBlockingDeque```, ```ConcurrentLinkedDeque```, ```LinkedList```등의 클래스가 있다.
+
+스택,큐,덱 정리
+* Stack : LIFO의 구조로 마지막에 들어온 것이 가장 먼저 나간다.
+* Queue : FIFO의 구조로 먼저 들어온 것이 가장 먼저 나간다.
+* Deque : 앞,뒤 구분 없이 들어오고 나갈 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
