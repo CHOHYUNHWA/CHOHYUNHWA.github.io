@@ -1,0 +1,276 @@
+---
+layout: post
+title:  "[백준] 5430-AC-Java"
+date:   2023-07-01 10:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-07-01 at 8.11.58 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/5430">[백준] 5430-AC-Java</a></center>
+---
+
+## ❓문제
+
+AC라는 언어에는 R,D라는 두가지 함수가 있다.
+* R은 배열에 있는 원소를 뒤집는 함수이다.
+* D는 배열의 첫 번째 원소를 버리는 함수이다.
+예를들어 "RDD"는 배열을 뒤집은 다음 처음 두 수를 버리는 함수이다.
+<br>
+
+아래의 입력 값이 주어질 때, 최종 결과를 구하는 프로그램을 작성하라.
+만약 테스트케이스에 대해서 에러가 발생한 경우에는 error를 출력한다.
+
+<br>
+
+조건
+* 0 ≤ n ≤ 100,000
+* 1 ≤ ex ≤ 100
+* 1 ≤ p ≤ 100,000
+
+```
+입력값
+T -> 테스트 케이스의 개수
+p -> 수행할 함수 
+n -> 배열의 원소개수
+[ex1,ex2,ex3] ->배열의 원소
+```
+
+
+### 예제
+
+```
+//입력 예시
+4
+RDD
+4
+[1,2,3,4]
+DD
+1
+[42]
+RRD
+6
+[1,1,2,3,5,8]
+D
+0
+[]
+```
+
+```
+출력예시
+[2,1]
+error
+[1,2,3,5,8]
+error
+```
+
+
+
+
+## 🖊️풀이법
+
+이번 문제는 덱의 성질을 이용해서 풀면 된다.<br>
+다만 주의사항이 몇가지 있다.<br>
+1. 만약 주어진 배열이 [] 빈배열일 경우 R을 하면 error가 아닌 []이다. 만약 error로 출력할 경우 틀리게 된다.
+2. ArrayList의 경우 n의 범위가 100,000이기 때문에 만약 원소의 0번째에 D함수가 계속 호출되면, 매번 배열이 복사되어 시간초과 오류가 난다.
+3. "R" 함수가 호출될 때마다, 배열을 뒤집을 경우 최대 10만번의 재배열이 일어나기 때문에 실제 배열을 뒤집어선 안된다.
+위 세가지 사항을 유의하여, 풀자
+
+3번의 경우, 실제로 배열을 뒤집을 필요는 전혀 없다.<br>
+reverse라는 boolean값을 선언하여, 현재상태가 정방향인지 역방향인지 구분하면 된다.
+
+보다 자세한 풀이는 아래의 코드와 주석을 참조하자.
+
+### 정답 코드
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        while (T-- > 0) { //T만큼 반복한다.
+            boolean reverse = false; //현재 정방향인지 역방향인지 확인하는 boolean
+            boolean errorFlag = false; //에러인지 아닌지 확인하는 boolean
+            Deque<Integer> deque = new LinkedList(); //덱을 선언
+            String p = br.readLine(); //p를 문자열로 할당
+            int n = Integer.parseInt(br.readLine()); //n을 int로 할당
+            String arr = br.readLine(); //원소가 담긴 배열을 문자열로 받아온다.
+
+            String[] strArr = arr.substring(1,arr.length()-1).split(",");
+            //받아온 문자열을 "[]"(대괄호)와 ","(쉼표)를 지운다.
+
+            //만약 정제된 원소배열이 빈배열일 경우, 배열에 ""빈문자열이 반환되기 때문에
+            //다음과 같은 조건문을 걸어줘야한다.
+            if(!strArr[0].equals("")){ //민약 빈배열이 아닌경우
+                for(int i = 0; i < strArr.length; i++){
+                    deque.add(Integer.parseInt(strArr[i])); //덱이 요소를 담는다.
+                }
+            }
+
+                for(int i = 0; i < p.length(); i++) {
+                    if (p.charAt(i) == 'R') { //R이 호출되었을 때
+                        if (!reverse) { //flag 가 false이면,
+                            reverse = true; //true로 전환
+                        } else { //아닌 경우
+                            reverse = false; //false로 전환
+                        }
+                    }
+                    if (p.charAt(i) == 'D') { //D가 호출되었을 때
+                        if(deque.size() == 0){ //덱의 크기가 0이면
+                            sb.append("error").append('\n'); //eeror출력
+                            errorFlag = true; //에러 플래그를 true로 변환
+                            break; //반복문 종료
+                        }
+                        else if (!reverse) { //덱의 크기가 0이 아니고, reverse가 false이면
+                            deque.removeFirst(); //정방향이므로 첫번째 원소를 삭제
+                        } else { //역방향인 경우
+                            deque.removeLast();  //마지막 원소를 삭제
+                        }
+                    }
+                }
+            if(errorFlag){ //만약 앞에서 큐의 사이즈가 0이어서 error가 난경우
+                errorFlag = false; // errorFlag를 다시 false로 돌린 후
+                continue; //반복문 continue
+            }
+
+                sb.append("["); //함수를 다 실행한 뒤
+
+                if(deque.size() != 0) { //덱의 사이즈가 0이 아니면
+                    int size = deque.size(); //size에 덱의 크기 할당
+                    if(!reverse){ //정방향인 경우
+                        for(int i = 0; i < size-1; i++){ //덱의 첫번째 요소부터 출력
+                            sb.append(deque.getFirst()).append(",");
+                            deque.removeFirst();
+                        }
+                        sb.append(deque.getLast());
+                    } else { //역방향인 경우 
+                        for(int i = size-1; i > 0; i--){ //덱의 마지막 요소부터 출력
+                            sb.append(deque.getLast()).append(",");
+                            deque.removeLast();
+                        }
+                        sb.append(deque.getFirst());
+                    }
+                }
+                sb.append("]").append('\n');
+        }
+        System.out.println(sb); //sb에 담긴 최종 출력
+    }
+}
+```
+
+위 코드는 핵심 로직들이 분할이 되어있지 않아서, 디버깅도 쉽지 않고 에러 부분을 찾기 힘든다<br>
+따라서, 아래의 형태처럼 메서드를 분할 하고 핵심 비즈니스로직으로 분류하여 리팩토링 해보았다.<br>
+우선, AC함수에 대한 로직들과 AC함수를 거쳐 출력 Format으로 만들어 주는 printAnswer로 분류하였다.<br>
+
+### 리팩토링 코드 
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    public static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        while (T-- > 0) {
+            String p = br.readLine();
+            int n = Integer.parseInt(br.readLine());
+            String arr = br.readLine();
+            String[] strArr = arr.substring(1, arr.length() - 1).split(",");
+
+            AC(p, strArr);
+
+        }
+        System.out.println(sb);
+    }
+
+
+    static void AC(String p, String[] strArr) {
+
+        boolean reverse = false;
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+
+        if (!strArr[0].equals("")) {
+            for (int i = 0; i < strArr.length; i++) {
+                deque.add(Integer.parseInt(strArr[i]));
+            }
+        }
+        for (int i = 0; i < p.length(); i++) {
+            if (p.charAt(i) == 'R') {
+                if (!reverse) {
+                    reverse = true;
+                } else {
+                    reverse = false;
+                }
+            }
+            if (p.charAt(i) == 'D') {
+                if (deque.size() == 0) {
+                    sb.append("error").append('\n');
+                    return;
+                } else if (!reverse) {
+                    deque.removeFirst();
+                } else {
+                    deque.removeLast();
+                }
+            }
+        }
+
+        printAnswer(deque, reverse);
+
+    }
+
+    static void printAnswer(ArrayDeque deque, boolean reverse) {
+        sb.append("[");
+        if(deque.size()!=0) {
+            if (!reverse) {
+                while (deque.size() > 1) {
+                    sb.append(deque.pollFirst()).append(",");
+                }
+                sb.append(deque.pollFirst());
+            } else {
+                while (deque.size() > 1) {
+                    sb.append(deque.pollLast()).append(",");
+                }
+                sb.append(deque.pollLast());
+            }
+        }
+            sb.append("]").append('\n');
+    }
+}
+```
+---
+
+
+## 정리
+
+사실, 이전까지는 객체지향에 대해서 공부하고 중요성에 대해서는 알고있었지만, 피부로 와닿지는 못했다.<br>
+하지만 이번에 코드 리팩토링을 통해 메서드를 분리하고, 역할을 분담하니 디버깅도 편해지고 어느부분에 문제가 있는지 찾고 고치기 쉽다는 것을 깨달았다.<br>
+앞으로는 코드를 작성할 때 추상화를 먼저 실행하고 구현을 하도록 하는 습관을 들여야겠다 :)<br>
+오늘은 몸소 깨달은게 많아서 뿌듯하다.. ㅎㅎ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
