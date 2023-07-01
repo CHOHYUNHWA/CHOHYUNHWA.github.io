@@ -1,0 +1,127 @@
+---
+layout: post
+title:  "[백준] 27433-팩토리얼 2-Java"
+date:   2023-07-02 00:00:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-07-02 at 2.09.01 AM.png)
+### <center><a href="https://www.acmicpc.net/problem/27433">[백준] 27433-팩토리얼 2-Java</a></center>
+---
+
+## ❓문제
+
+정수 N을 입력받아 N!을 출력하는 프로그램을 작성하시오.
+
+N의 범위
+* 0 ≤ N ≤ 20
+
+
+## 🖊️풀이법
+
+재귀함수의 기본학습에서 배울 수 있는 팩토리얼 문제이다.
+푸는 방법은 두가지이다.
+1. 재귀함수 이용
+2. 반복문 이용
+
+### 재귀 함수 정답 코드
+
+우선 재귀함수는 자기자신을 호출 하는 함수이다.<br>
+예를 들어 10!는 아래와 같이 나타낼 수 있다.<br>
+1. 10 * factorial ( 9 )
+2. 10 * 9 * factorial ( 8 )
+3. 10 * 9 * 8 * factorial ( 7 )
+4. 10 * 9 * 8 * 7 * factorial ( 6 )
+5. 10 * 9 * 8 * 7 * 6 * factorial ( 5 )
+6. 10 * 9 * 8 * 7 * 6 * 5 * factorial ( 4 )
+7. 10 * 9 * 8 * 7 * 6 * 5 * 4 * factorial ( 3 )
+8. 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * factorial ( 2 )
+9. 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * factorial ( 1 )
+10. 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1
+
+<br>
+
+그렇다면 코드를 한번 살펴보자.
+
+```java
+import java.io.*;
+
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        System.out.println(factorial(N));
+    }
+
+    private static long factorial(int n) {
+        if(n == 0){
+            return 1;
+        }
+        return n * factorial(n - 1);
+    }
+}
+```
+
+위의 개념을 적용하여, factorial 함수를 실행하고, 결국 n에 도달했을 때, 호출되어 쌓인 함수들이 다시 연산된다.
+
+### 반복문 정답 코드 
+
+```java
+import java.io.*;
+
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        System.out.println(factorial(N));
+    }
+
+
+    private static long factorial(int n){
+        long result = 1;
+        for(int i = 2; i <= n; i++){
+            result *= i;
+        }
+        return result;
+    }
+}
+```
+
+딱히 반복문은 설명할 부분이 없다.. :) 
+
+---
+
+
+## 정리
+
+재귀함수는 코드를 보다 간결하고, 가독성을 높일 수 있다는 장점을 가지고있다.<br>
+하지만, 자기자신을 호출하기 때문에 탈출조건이 없다면, 계속해서 자기자신을 호출하여, StackOverFlow가 발생할 수 있다.<br>
+또한, 함수를 계속해서 호출하게 되면, 호출한 함수의 지역변수, 매개변수, 리턴 값들을 메모리의 스택에 쌓이게 되고, 이는 곧 속도저하로 이어질 수 있다.<br>
+또한, 호출된 함수가 복귀하는 과정이 생기기 때문에, 스위칭 비용이 발생한다는 단점이 있다.
+
+<br>
+그리고 개인적으로.. 반복문은 매우 어렵다는.. 단점이 있는 것 같다 ㅎㅎ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
