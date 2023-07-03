@@ -1,0 +1,103 @@
+---
+layout: post
+title:  "[백준] 25501-재귀의 귀재-Java"
+date:   2023-07-03 00:10:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-07-03 at 1.27.46 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/25501">[백준] 25501-재귀의 귀재-Java</a></center>
+---
+
+## ❓문제
+
+1. 팰린드롬이란 문자를 앞에서 읽었을 떄와 뒤에서 읽었을 때가 같은 문자열을 말한다.<br>
+예를들어. AAA, ABBA, 토마토, 스위스등이 있다.
+2. 아래의 isPalindrome 함수를 이용하여, 어떤 문자열이 팰린드롬인지 여부를 판단하려고 한다.
+```
+public class Main{
+    public static int recursion(String s, int l, int r){
+        if(l >= r) return 1;
+        else if(s.charAt(l) != s.charAt(r)) return 0;
+        else return recursion(s, l+1, r-1);
+    }
+    public static int isPalindrome(String s){
+        return recursion(s, 0, s.length()-1);
+    }
+    public static void main(String[] args){
+        System.out.println("ABBA: " + isPalindrome("ABBA"));
+        System.out.println("ABC: " + isPalindrome("ABC"));
+    }
+}
+```
+3. 위의 함수를 이용하여, 테스트케이스 T와 T개의 문자열을 입력받아, 해당 문제가 펠린드룸 문자인지 그리고 recursion 함수의 호출 횟수를 출력하라.
+
+### 입력 범위
+* 1 ≤ T ≤ 1,000
+* 1 ≤ S ≤ 1,000
+
+
+## 🖊️풀이법
+
+이번 문제는 재귀문제라기 보다는 단순히, 주어진 메서드를 원하는 정보를 추가로 얻을 수 있게 튜닝(?)하는 문제에 가깝다.<br>
+recursion의 호출횟수를 구하기 위해서, 호출횟수를 담을 count값을 전역변수로 선언해준 뒤 recursion이 호출될때마다 +1를 하고 모든 함수가 연산되었을 때, 출력값에 함께 넣어주면 간단하게 풀 수 있다.
+
+### 정답 코드
+
+
+
+```java
+import java.io.*;
+
+
+public class Main{
+    static int count; //전역변수 선언
+    public static int recursion(String s, int l, int r){ 
+        count++; //recursion함수가 홀출될 때 마다 count++
+        if(l >= r) return 1;
+        else if(s.charAt(l) != s.charAt(r)) return 0;
+        else return recursion(s, l+1, r-1);
+    }
+    public static int isPalindrome(String s){
+        return recursion(s, 0, s.length()-1);
+    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        for(int i = 0; i < N; i++){
+            String s = br.readLine();
+            count = 0;
+            sb.append(isPalindrome(s)).append(" ").append(count).append('\n');
+            //isPalindrome 함수가 결과를 반환하고 출력문에 함께 넣어준다.
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+---
+
+
+## 정리
+
+간단하게 Clear🛠️
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
