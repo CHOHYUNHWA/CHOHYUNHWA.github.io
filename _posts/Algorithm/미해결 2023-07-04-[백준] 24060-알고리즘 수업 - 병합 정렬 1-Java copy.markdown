@@ -1,0 +1,50 @@
+---
+layout: post
+title:  "[백준] 24060-알고리즘 수업 - 병합 정렬 1-Java"
+date:   2023-07-04 00:10:19 +0900
+categories: algorithm 미결
+tags: algorithm 미결
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-07-04 at 9.57.06 AM.png)
+### <center><a href="https://www.acmicpc.net/problem/24060">[백준] 24060-알고리즘 수업 - 병합 정렬 1-Java</a></center>
+---
+
+## ❓문제
+
+
+
+## 🖊️풀이법
+
+
+### 정답 코드
+
+
+```java
+
+```
+
+---
+
+
+## 정리
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

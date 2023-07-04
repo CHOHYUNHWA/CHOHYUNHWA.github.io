@@ -1,0 +1,109 @@
+---
+layout: post
+title:  "[백준] 4779-칸토어 집합-Java"
+date:   2023-07-04 00:10:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-07-04 at 12.15.30 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/4779">[백준] 4779-칸토어 집합-Java</a></center>
+---
+
+## ❓문제
+
+1. '-'가 3<sup>N개 있는 문자열에서 시작한다.
+2. 문자열을 3등분 한 뒤, 가운데 문자열을 공백으로 바꾼다.
+3. 계속해서 반복하여, 모든 선의 길이가 1일때 까지 반복한다.
+
+* N의 범위
+0 ≤ N ≤ 12
+
+``` 
+예제 입력
+0
+1
+3
+2
+```
+
+``` 
+예제 출력
+-
+- -
+- -   - -         - -   - -
+- -   - -
+```
+
+
+## 🖊️풀이법
+
+재귀함수를 이용하면 좋은 문제이다.
+1. 범위를 3등분 한다.
+2. 3등분한 범위의 가운데를 공백으로 바꿔준다.
+3. 해당 작업을 반복하며, 범위가 1이되면, 재귀함수 호출을 종료한다.
+
+### 정답 코드
+
+
+```java
+import java.io.*;
+
+
+public class Main {
+    static char[] charArr; 
+    static StringBuilder answer; 
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String input; //입력값
+        while((input = br.readLine()) != null){ //입력값이 없을때까지 반복
+            int N = Integer.parseInt(input); //N에 입력값을 할당
+            answer = new StringBuilder(); //정답을 담을 StringBuilder 객체 생성
+            int length = (int) Math.pow(3, N); //전체 범위 지정 후
+            for(int i = 0; i < length; i++){ //반복문을 반복하며 초기값 셋팅
+                answer.append('-');
+            }
+            cantor(0,length); //칸토어 함수
+            System.out.println(answer);
+        }
+    }
+
+    private static void cantor(int start, int length) {
+        if(length == 1){ //만약 사이즈가 1이 되면 리턴
+            return;
+        }
+        int divideLength = length/3; //3등분한 길이를 변수에 선언
+        for(int i = start + divideLength; i < start + divideLength*2; i++){ //가운데 범위를 공백으로 변환
+            answer.setCharAt(i, ' ');
+        }
+        cantor(start,divideLength); //3등분한 앞의 범위만큼 공백으로 변한하기 위해 재귀호출
+        cantor(start+ divideLength*2 , divideLength); //3등분한 뒤의 범위만큼 공백으로 변환하기 위해 재귀호출
+    }
+}
+```
+
+---
+
+
+## 정리
+
+비교적 쉽고, 간단한 문제였다.<br>
+재귀함수 자체가 여러 번의 호출로 메모리에 파라미터값과 함께 올라가는 까닭에.. 꽤나 복잡한 문제의 경우 이해가 쉽지 않지만, 이처럼 단순한 문제는 이제 쉽게 풀 수 있는 것 같다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
