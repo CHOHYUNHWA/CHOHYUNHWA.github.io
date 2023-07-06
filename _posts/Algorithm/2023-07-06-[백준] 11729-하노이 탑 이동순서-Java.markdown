@@ -48,15 +48,15 @@ public class Main {
         System.out.println(sb);
 
     }
-    static void hanoi(int N, int start, int mid, int end){ //파라미터로 N,시작,중간,끝을 입력받는다.
-        count++; //하노이 함수가 실행될 때마다 count를 +1
-        if(N == 1){ //만약 N이 1일 경우 출력문에 추가
-            sb.append(start+" "+end).append('\n');
+    static void hanoi(int N, int from, int temp, int to){ //파라미터로 N,from,temp,to를 입력받는다.
+        count++; //하노이 함수가 실행될 때마다 count +1
+        if(N == 1){ //만약 N이 1일 경우 출력문 추가 후 메서드 탈출
+            sb.append(from+" "+to).append('\n');
             return;
         }
-        hanoi(N-1,start,end,mid); //n-1개를 start에서 mid로 이동
-        sb.append(start+ " " + end).append('\n'); //가장 큰 원판을 start에서 end로 이동
-        hanoi(N-1,mid,start,end); //N-1개를 mid지점에서 end로 이동
+        hanoi(N-1,from,to,temp); //n-1개를 1번에서 2번기둥으로 옮긴다.
+        sb.append(from+ " " + to).append('\n');//1번기둥에는 가장큰 원판만 남음으로 출력
+        hanoi(N-1,temp,from,to); //n-1개를 2번기둥에서 1번기둥으로 옮긴다.
     }
 }
 
