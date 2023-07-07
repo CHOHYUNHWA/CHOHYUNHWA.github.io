@@ -1,0 +1,109 @@
+---
+layout: post
+title:  "[백준] N과 M (2)-Java"
+date:   2023-07-07 00:10:19 +0900
+categories: algorithm
+tags: algorithm
+---
+
+![screenshot](/assets/img/algorithm/Screenshot 2023-07-07 at 2.25.11 PM.png)
+### <center><a href="https://www.acmicpc.net/problem/15650">[백준] 15650-N과 M (2)-Java</a></center>
+---
+
+## ❓문제
+
+자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오.
+* 1부터 N까지 자연수 중에서 중복 없이 M개를 고른 수열
+
+첫째 줄에 자연수 N과 M이 주어진다. (1 ≤ M ≤ N ≤ 8)
+
+```
+예제 입력
+4 2
+```
+
+```
+예제 출력
+1 2
+1 3
+1 4
+2 3
+2 4
+3 4
+```
+
+
+## 🖊️풀이법
+
+이번 문제는 백트리킹 카테고리의 두번째 문제이다.<br>
+앞전에 풀었던 15649에서 설명했던 DFS의 개념을 가지고 문제를 만약 해당 알고리즘의 개념이 궁금하다면,<br>
+ <a href="https://chohyunhwa.github.io/algorithm/2023-07-04-%EB%B0%B1%EC%A4%80-15649-N%EA%B3%BC-M-(1)-Java/">[백준] 15649-N과 M (1)-Java</a>를 참고하자.<br>
+
+
+
+### 정답 코드
+
+
+```java
+import java.util.*;
+import java.io.*;
+
+
+public class Main {
+    static int[] arr;
+    static int N;
+    static int M;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        arr = new int[M];
+        dfs(1,0); 
+        System.out.println(sb);
+
+
+    }
+
+    private static void dfs(int start, int depth) { 
+        if(depth == M){ 
+            for(int var : arr){
+                sb.append(var).append(' ');
+            }
+            sb.append('\n');
+            return;
+        }
+        for(int i = start; i <= N; i++){
+            arr[depth] = i;
+            dfs(i + 1,depth +1);
+        }
+    }
+}
+```
+
+---
+
+
+## 정리
+
+아직까지 익숙치 않은 재귀 너무어렵다 '_'..<br>
+사고의 전환을 항상 노력하자.!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
